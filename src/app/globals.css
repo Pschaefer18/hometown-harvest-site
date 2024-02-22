@@ -80,20 +80,6 @@
 }
 
 html,
-body {
-  max-width: 100vw;
-  overflow-x: hidden;
-}
-
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
-}
 
 a {
   color: inherit;
@@ -104,4 +90,120 @@ a {
   html {
     color-scheme: dark;
   }
+}
+@media screen and (max-width: 480px) {
+  p {
+    font-size: 12px;
+  }
+  .form-check {
+    font-size: 10px;
+  }
+}
+@media screen and (max-width: 850px) {
+  p {
+    font-size: 14px;
+  }
+}
+body {
+  margin: auto;
+  padding: 10px 25px;
+  max-width: 800px;
+  background-color: white;
+}
+.banner {
+  text-align: center;
+}
+.banner-img {
+  margin: auto;
+  width: 80%;
+  height: auto;
+}
+.banner h1, .banner h6 {
+  color: Black;
+  text-align: center;
+}
+.h6 {
+  margin: auto;
+}
+.h6-wrapper {
+  text-align: center;
+}
+.h6-wrapper:hover {
+  cursor: pointer;
+}
+.form {
+  margin-top: 5%;
+}
+.form input {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.about-title {
+  text-align: center;
+  position: relative;
+}
+.csa-about {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  margin-top: 50px;
+  max-height: 200px;
+  overflow: hidden;
+  padding: 10px;
+  margin-bottom: 20px;
+
+transition: max-height 0.15s ease-out;
+}
+.csa-about h4 {
+  text-align: center;
+}
+.csa-about h5 {
+  margin-bottom: 10px;
+}
+.csa-about.expand{
+  max-height: 5000px !important;
+  transition:max-height 1s ease-in-out;
+}
+.readmore-link{
+  position: sticky;
+  align-self: flex-end;
+  bottom: -10px;
+  right: 0;
+  display: block;
+  width: 100%;
+  height: 100px;
+  text-align: center;
+  font-weight:bold;
+  font-size:16px;
+  padding-top:40px;
+  background-image: linear-gradient(to bottom, transparent, white);
+  cursor: pointer;
+}
+.readmore-link.expand {
+  position: relative;
+  background-image: none;
+  padding-top:10px;
+  bottom: 0;
+  height:20px;
+}
+
+.readmore-link:after {
+  content:"Read more";
+}
+.readmore-link.expand:after{
+  content:"Read less";
+}
+.submit-btn {
+  margin: 5% 1.5%;
+  padding: 1% 0;
+  width: 97%;
+  font-size: 20px;
+  border-radius: 5px;
+  color: white;
+  background-color: black;
+}
+.confirmation-page {
+  text-align: center;
+  margin-top: 10%;
 }
