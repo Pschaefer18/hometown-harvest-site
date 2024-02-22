@@ -6,8 +6,8 @@ import Head from "next/head";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {db} from "./firebase"
 import {collection, addDoc} from 'firebase/firestore';
-
 import { useState, useRef, useEffect } from "react";
+
 export default function Home() {
 
   const [isExpanded, setIsExpanded] = useState(false);
@@ -111,11 +111,11 @@ export default function Home() {
         "CSA" stands for "Community Supported Agriculture". Today’s CSAs tend to be a subscription where the customer makes an up-front payment and receives a box of produce each week throughout the growing season (this one is no different).  The first CSAs took place in Japan in response to concern around chemicals used in farming. The new iteration we know today in North America took off in the 80s and, although similar, formed independently of the Japanese and is based on Rudolph Steiner's ideas from the 1920s.
       </p>
       <h5>What will this CSA look like?</h5>
-      <p>If all goes to plan, this will be a 25-week CSA beginning late May and running until the first week in November. You’ll get to see a total of 45 different crops throughout the year. Shares will consist of 8-10 items (about $2 per item).  An item being… a bunch of Kale, two heads of lettuce, 2lb bag of spinach (wet), a pint of cherry tomatoes, 3 eggplants, etc. Share sizes will fluctuate depending on productivity. You can see an optimistic, week by week outline of the plan here. There will be choices between certain items (e.g. choose kale or kohlrabi, pick two of three: Bok choi, tatsoi or komatsuna). You may select either Wednesday delivery or Saturday pick-up when you sign up. For the delivery members, there will be a form to complete each week to handle the choice items.</p>
+      <p>If all goes to plan, this will be a 25-week CSA beginning late May and running until the first week in November. You’ll get to see a total of 45 different crops throughout the year. Shares will consist of 8-10 items (about $2 per item).  An item being… a bunch of Kale, two heads of lettuce, 2lb bag of spinach (wet), a pint of cherry tomatoes, 3 eggplants, etc. Share sizes will fluctuate depending on productivity. You can see an optimistic, week by week outline of the plan <a href="/CSA-Week-by-Week.pdf">here</a>. There will be choices between certain items (e.g. choose kale or kohlrabi, pick two of three: Bok choi, tatsoi or komatsuna). You may select either Wednesday delivery or Saturday pick-up when you sign up. For the delivery members, there will be a form to complete each week to handle the choice items.</p>
       <h5>What risk am I taking?</h5>
-      <p>As a CSA member, you are sharing risk, not unlike an investor. You should be aware of what those risks are and how they apply in our case. I’ve done my best to provide an overview of common threats to small growers and which ones I am concerned about. You can view that here.</p>
+      <p>As a CSA member, you are sharing risk, not unlike an investor. You should be aware of what those risks are and how they apply in our case. I’ve done my best to provide an overview of <a href="/Threats.pdf">common threats to small growers</a> and which ones I am concerned about.</p>
       <h5>What are your growing practices?</h5>
-      <p>Although this is not a certified organic operation, all practices will follow organic standards. In lieu of pesticides, beds of native plants will be placed periodically throughout the garden beds. In place of chemical fertilizer, heavy amounts of compost will be used. The only pesticide that will be sprayed is BT (bacillus thuringiensis). It's a bacteria that targets cabbage, tomato, and a few other worms and is allowed under Organic regulations. </p>
+      <p>Although this is not a certified organic operation, all practices will follow organic standards. In lieu of pesticides, beds of native plants will be placed periodically throughout the garden beds. In place of chemical fertilizer, heavy amounts of compost will be used. The only pesticide that will be sprayed is BT (<a href="https://en.wikipedia.org/wiki/Bacillus_thuringiensis">bacillus thuringiensis</a>). It's a bacterium that targets caterpillars (cabbage and tomato worms) and is allowed under Organic regulations. </p>
       <span class={(isExpanded) ? "readmore-link expand" : "readmore-link"} onClick={() => {setIsExpanded(!isExpanded)}}></span>
     </div>
     <form class="form" onSubmit={(e) => {
