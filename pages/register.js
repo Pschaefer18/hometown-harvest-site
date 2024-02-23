@@ -105,7 +105,7 @@ export default function register() {
   return (
     <>
     <Head>
-      <title>Signup</title>
+      <title>2024 CSA Registration</title>
       <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
