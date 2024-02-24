@@ -263,7 +263,7 @@ export default function register() {
           {withinDeliveryRange != null && csaSelection == "wednesday home delivery" ? (<span class={`delivery-status ${withinDeliveryRange ? 'text-success' : 'text-danger'}`}>{withinDeliveryRange ? ('Hurray! your address qualifies for Wednesday Delivery.') : 'Sorry, this address does not qualify for wednesday delivery.'}</span>) : (null)}
           <button class="submit-btn" type="submit">Submit</button>
         </form>
-      <h2>Payment</h2>
+      <h4>Payment</h4>
       <ul>
         <li>Make checks payable to "Paul Schaefer"</li>
         <li>Mail to the following address or hand deliver to me:<br/>
@@ -272,7 +272,22 @@ export default function register() {
         <li>Ensure you have sufficient account funds as checks will be cashed upon arrival</li>
         <li>Once your check has been received, you'll be notified and your status as a member will be confirmed</li>
       </ul>
-  </div>
+      <div class="contact-info">
+        <h4>Contact Information</h4>
+        <div class="row">
+          Email:
+          <div class="value col-md-4 col-sm-6 col-xs-10">
+            <a href="mailto:hometownharvestllc@gmail.com">hometownharvestllc@gmail.com</a>
+          </div>
+        </div>
+        <div class="row">
+          Phone:
+          <div class="value col-md-4 col-sm-6 col-xs-10">
+            (734) 417-9715
+          </div>
+        </div>
+      </div>
+    </div>
     </>
   );
 }
