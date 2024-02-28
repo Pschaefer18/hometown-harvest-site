@@ -227,3 +227,14 @@
   .contact-info .value {
     font-weight: normal;
   }
+  .payment-option {
+    text-align: center;
+  }
+  .payment-option ul {
+    text-align: left;
+    list-style-type: '- ';
+  }
+  .payment-info {
+    font-weight: 400;
+    font-style: italic;
+  }

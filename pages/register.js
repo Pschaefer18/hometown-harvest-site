@@ -264,14 +264,36 @@ export default function register() {
           <button class="submit-btn" type="submit">Submit</button>
         </form>
       <h4>Payment</h4>
-      <ul>
+      <div class="container">
+        <div class="row">
+          <div class="col-sm-6 payment-option">
+            <h5>Write a check</h5>
+            <ul>
+              <li>Make checks payable to "Paul Schaefer"</li>
+              <li>Mail to the following address or hand deliver to me:<br/>
+                4161 Sunset Ct, Ann Arbor, MI 48103 </li>
+              <li>Ensure you have sufficient account funds as checks will be cashed upon arrival</li>
+            </ul>
+          </div>
+          <div class="col-sm-6 payment-option">
+            <h5>Pay with Venmo</h5>
+            <p>Venmo handle: @pschaefer18</p>
+          </div>
+        </div>
+        <div class="payment-info">
+        Payments must be made before May 1st to confirm your membership <br/>
+        Once your payment has been received, you'll be notified and your status as a member will be confirmed
+        </div>
+      </div>
+      {/* <ul>
         <li>Make checks payable to "Paul Schaefer"</li>
+        <li>Or send via Venmo to @pschaefer18</li>
         <li>Mail to the following address or hand deliver to me:<br/>
             4161 Sunset Ct, Ann Arbor, MI 48103 </li>
         <li>Payments must be made before May 1st to confirm your membership</li>
         <li>Ensure you have sufficient account funds as checks will be cashed upon arrival</li>
-        <li>Once your check has been received, you'll be notified and your status as a member will be confirmed</li>
-      </ul>
+        <li>Once your payment has been received, you'll be notified and your status as a member will be confirmed</li>
+      </ul> */}
       <div class="contact-info">
         <h4>Contact Information</h4>
         <div class="row">
