@@ -120,9 +120,11 @@ export default function register() {
     <div class={(isExpanded) ? "csa-about expand" : "csa-about"}>
       <h4 class="about-title">Frequently Asked Questions</h4>
       <h5>What is a CSA?</h5>
-      <p>
-        "CSA" stands for "Community Supported Agriculture". Today’s CSAs tend to be a subscription where the customer makes an up-front payment and receives a box of produce each week throughout the growing season (this one is no different).  The first CSAs took place in Japan in response to concern around chemicals used in farming. The new iteration we know today in North America took off in the 80s and, although similar, formed independently of the Japanese and is based on Rudolph Steiner's ideas from the 1920s.
-      </p>
+      <p>"CSA" stands for "Community Supported Agriculture". Today’s CSAs tend to be a subscription where the customer makes an up-front payment and receives a box of produce each week throughout the growing season (this one is no different).  The first CSAs took place in Japan in response to concern around chemicals used in farming. The new iteration we know today in North America took off in the 80s and, although similar, formed independently of the Japanese and is based on Rudolph Steiner's ideas from the 1920s.</p>
+      <h5>What exactly is this?</h5>
+      <p>This is the first year of a CSA garden located on Zeeb Rd just North of Daly (5185 Zeeb). The produce will be grown on about an acre among a 12-acre leased section. Of course, the first year of anything is a challenge, but I’m confident that we’ll have an abundance of produce and satisfied members. I spent 9 months in Illinois on an intensive, organic vegetable farm (<a target="_blank" href="https://brockmanfamilyfarming.com/henrys-farm/">Henry’s Farm</a>), so I understand what I’m getting into.</p>
+      <h5>What is the history of the land?</h5>
+      <p>The land was conventionally farmed corn and soy until 2023 when it was planted in perennial hay. The clay loam is now compacted and low in organic matter. Because of this, I’ve decided to go HEAVY on compost to add nutrients, improve structure, and bring back the biology required for small scale vegetable production.</p>
       <h5>What will this CSA look like?</h5>
       <p>If all goes to plan, this will be a 25-week CSA beginning late May and running until the first week in November. You’ll get to see a total of 45 different crops throughout the year. Shares will consist of 8-10 items (about $2 per item).  An item being… a bunch of Kale, two heads of lettuce, 2lb bag of spinach (wet), a pint of cherry tomatoes, 3 eggplants, etc. Share sizes will fluctuate depending on productivity. You can see an optimistic, week by week outline of the plan <a target="_blank" href="/CSA-Week-by-Week.pdf">here</a>. There will be choices between certain items (e.g. choose kale or kohlrabi, pick two of three: Bok choi, tatsoi or komatsuna). You may select either Wednesday delivery or Saturday pick-up when you sign up. For the delivery members, there will be a form to complete each week to handle the choice items.</p>
       <h5>What risk am I taking?</h5>
@@ -277,8 +279,8 @@ export default function register() {
           </div>
           <div class="col-sm-6 payment-option">
             <h5>Pay with Venmo</h5>
-            <p>Venmo handle: @pschaefer18</p>
             <Image src="/MyVenmoQRCode.png" width="150" height="204" alt="venmo QR Code" />
+            <p>Venmo handle: @pschaefer18</p>
           </div>
         </div>
         <div class="payment-info">
