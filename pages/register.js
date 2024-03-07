@@ -8,10 +8,48 @@ import {db} from "../src/app/firebase";
 import {collection, addDoc} from 'firebase/firestore';
 import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/router";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCaretRight } from "@fortawesome/free-solid-svg-icons";
+import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 
 export default function register() {
 
-  const [isExpanded, setIsExpanded] = useState(false);
+  const FAQs = [
+    {
+      question: "What is a CSA?",
+      answer: `"CSA" stands for "Community Supported Agriculture". Today’s CSAs tend to be a subscription where the customer makes an up-front payment and receives a box of produce each week throughout the growing season (this one is no different).  The first CSAs took place in Japan in response to concern around chemicals used in farming. The new iteration we know today in North America took off in the 80s and, although similar, formed independently of the Japanese and is based on Rudolph Steiner's ideas from the 1920s.`
+    },
+    {
+      question: "What risk am I taking?",
+      answer: `As a CSA member, you are sharing risk, not unlike an investor. You should be aware of what those risks are and how they apply in our case. I’ve done my best to provide an overview of **link** and which ones I am concerned about.`,
+      link: {
+              href: "/Threats.pdf",
+              placeholder: "common threats to small growers"
+            }
+    },
+    {
+      question: "What is the history of the land?",
+      answer: "The land was conventionally farmed corn and soy until 2023 when it was planted in perennial hay. The clay loam is now compacted and low in organic matter. Because of this, I’ve decided to go HEAVY on compost to add nutrients, improve structure, and bring back the biology required for small scale vegetable production."
+    },
+    {
+      question: "How will communication work?",
+      answer: "Beginning in May, I’ll start sending out some email updates. Once the program kicks off around the last week of May, you’ll receive a weekly newsletter with any important information, an update of how things are going, and what will be in your share for the week. Contact me if you have any questions or concerns. Email: hometownharvestllc@gmail.com, phone: (734) 417-9715"
+    },
+    {
+      question: "What if I’m gone for a week and can’t pick up my share?",
+      answer: "If you know ahead of time that you'll be absent for a CSA pickup/delivery, please contact me by text or email at least one week before (see contact info at bottom of page). As long as I'm aware before harvesting time, you'll be able to receive a double share the following week. This does not, however, carry over for a third week. If you fail to notify me, someone will eat your share and you won't be getting a double share."
+    },
+    {
+      question: "What if I forget to pick up my share?",
+      answer: "I understand that many of my members have chaotic lives and picking up a box of produce might not be of top priority. If you realize you forgot to pick up your share, it will be held for 24 hours, and you can pick it up the next morning. After that, someone will eat it. I don’t plan to keep track of who’s picked up and who hasn’t, so I won’t be able to notify you if you forget."
+    },
+    {
+      question: "Can I come visit?",
+      answer: "Yes, whether you’ve already signed up or are considering signing up, you are always welcome to come visit. Just be sure to message me (734-417-9715) in advance to set up a time. If you’re trying to decide if you want to join the program, I can talk and show you around. Otherwise, you’ll be on your own to explore."
+    }
+  ]
+  const [CSAaboutIsExpanded, setCSAaboutIsExpanded] = useState(false);
+  const [CSAfaqIsExpanded, setCSAfaqIsExpanded] = useState(false);
   const [csaSelection, setCsaSelection] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -23,6 +61,7 @@ export default function register() {
   const [zipCode, setZipCode] = useState("");
   const [withinDeliveryRange, setWithinDeliveryRange] = useState(null);
   const [formCompletion, setFormCompletion] = useState("please fill out all fields");
+  const [isOpen, setIsOpen] = useState(Array(FAQs.length).fill(false));
   const router = useRouter();
 
   useEffect(() => {
@@ -102,6 +141,11 @@ export default function register() {
   const handleCsaSelectionChange = (event) => {
     setCsaSelection(event.target.value);
   }
+  const toggleFaq = (key) => {
+    var newArray = [...isOpen];
+    newArray[key] =!isOpen[key];
+    setIsOpen(newArray);
+  }
   return (
     <>
     <Head>
@@ -117,21 +161,11 @@ export default function register() {
       <h1>2024 CSA Registration</h1>
       <h6 class="h6">25 week CSA providing 8-10 items weekly</h6>
     </div>
-    <div class={(isExpanded) ? "csa-about expand" : "csa-about"}>
-      <h4 class="about-title">Frequently Asked Questions</h4>
-      <h5>What is a CSA?</h5>
-      <p>"CSA" stands for "Community Supported Agriculture". Today’s CSAs tend to be a subscription where the customer makes an up-front payment and receives a box of produce each week throughout the growing season (this one is no different).  The first CSAs took place in Japan in response to concern around chemicals used in farming. The new iteration we know today in North America took off in the 80s and, although similar, formed independently of the Japanese and is based on Rudolph Steiner's ideas from the 1920s.</p>
-      <h5>What exactly is this?</h5>
-      <p>This is the first year of a CSA garden located on Zeeb Rd just North of Daly (5185 Zeeb). The produce will be grown on about an acre among a 12-acre leased section. Of course, the first year of anything is a challenge, but I’m confident that we’ll have an abundance of produce and satisfied members. I spent 9 months in Illinois on an intensive, organic vegetable farm (<a target="_blank" href="https://brockmanfamilyfarming.com/henrys-farm/">Henry’s Farm</a>), so I understand what I’m getting into.</p>
-      <h5>What is the history of the land?</h5>
-      <p>The land was conventionally farmed corn and soy until 2023 when it was planted in perennial hay. The clay loam is now compacted and low in organic matter. Because of this, I’ve decided to go HEAVY on compost to add nutrients, improve structure, and bring back the biology required for small scale vegetable production.</p>
-      <h5>What will this CSA look like?</h5>
-      <p>If all goes to plan, this will be a 25-week CSA beginning late May and running until the first week in November. You’ll get to see a total of 45 different crops throughout the year. Shares will consist of 8-10 items (about $2 per item).  An item being… a bunch of Kale, two heads of lettuce, 2lb bag of spinach (wet), a pint of cherry tomatoes, 3 eggplants, etc. Share sizes will fluctuate depending on productivity. You can see an optimistic, week by week outline of the plan <a target="_blank" href="/CSA-Week-by-Week.pdf">here</a>. There will be choices between certain items (e.g. choose kale or kohlrabi, pick two of three: Bok choi, tatsoi or komatsuna). You may select either Wednesday delivery or Saturday pick-up when you sign up. For the delivery members, there will be a form to complete each week to handle the choice items.</p>
-      <h5>What risk am I taking?</h5>
-      <p>As a CSA member, you are sharing risk, not unlike an investor. You should be aware of what those risks are and how they apply in our case. I’ve done my best to provide an overview of <a target="_blank" href="/Threats.pdf">common threats to small growers</a> and which ones I am concerned about.</p>
-      <h5>What are your growing practices?</h5>
-      <p>Although this is not a certified organic operation, all practices will follow organic standards. In lieu of pesticides, beds of native plants will be placed periodically throughout the garden beds. In place of chemical fertilizer, heavy amounts of compost will be used. The only pesticide that will be sprayed is BT (<a target="_blank" href="https://en.wikipedia.org/wiki/Bacillus_thuringiensis">bacillus thuringiensis</a>). It's a bacterium that targets caterpillars (cabbage and tomato worms) and is allowed under Organic regulations. </p>
-      <span class={(isExpanded) ? "readmore-link expand" : "readmore-link"} onClick={() => {setIsExpanded(!isExpanded)}}></span>
+    <div class={(CSAaboutIsExpanded) ? "csa-about expand" : "csa-about"}>
+      <h4 class="about-title">About</h4>
+          <p>This is the first year of a CSA garden located on Zeeb Rd just North of Daly (5185 Zeeb). The produce will be grown on about an acre neighboring a 12-acre leased section. Of course, the first year of anything is a challenge, but I’m confident that we’ll have an abundance of produce and satisfied members. I spent 9 months in Illinois on an intensive, organic vegetable farm (<a target="_blank" href="https://brockmanfamilyfarming.com/henrys-farm/">Henry’s Farm</a>), so I understand what I’m getting into.</p> 
+          <p>If all goes to plan, this will be a 25-week CSA beginning late May and running until the first week in November. You’ll get to see a total of 45 different crops throughout the year. Shares will consist of 8-10 items (about $2 per item).  An item being… a bunch of Kale, two heads of lettuce, 2lb bag of spinach (wet), a pint of cherry tomatoes, 3 eggplants, etc. Share sizes will fluctuate depending on productivity. You can see an optimistic, week by week outline of the plan <a target="_blank" href="/CSA-Week-by-Week.pdf">here</a>. There will be choices between certain items (e.g. choose kale or kohlrabi, pick two of three: Bok choi, tatsoi or komatsuna). You may select either Wednesday delivery or Saturday pick-up when you sign up. For the delivery members, there will be a form to complete each week to handle the choice items.</p>
+      <span class={(CSAaboutIsExpanded) ? "readmore-link expand" : "readmore-link"} onClick={() => {setCSAaboutIsExpanded(!CSAaboutIsExpanded)}}></span>
     </div>
     <form class="form" onSubmit={(e) => {
       e.preventDefault();
@@ -287,6 +321,28 @@ export default function register() {
         Payments must be made before May 1st to confirm your membership <br/>
         Once your payment has been received, you'll be notified and your status as a member will be confirmed
         </div>
+      </div>
+      <h4 class="faq-title">Frequently Asked Questions</h4>
+      <div class="csa-faq">
+        <ul>
+          {FAQs.map((faq, key) => (
+            <li key={key}>
+              <div class="faq" onClick={() => toggleFaq(key)}><FontAwesomeIcon icon={isOpen[key] ? (faCaretDown):(faCaretRight)} width="20px" height="20px" class="icon"/><h5>{faq.question}</h5></div>
+              <p class={`faq-answer ${isOpen[key] ? "open" : ""}`}>
+                {faq.answer.split(' ').map((word, index) => (
+                  <span key={index}>
+                    {word ===  "**link**"? ( // Replace '**link**' with actual link
+                      <a href={faq.link.href}>
+                        {faq.link.placeholder}
+                      </a>
+                    ) : ( word )}
+                {' '} {/* Add a space after each word */}
+                  </span>
+    ))}
+  </p>
+            </li>
+          ))}
+        </ul>
       </div>
       <div class="contact-info">
         <h4>Contact Information</h4>
