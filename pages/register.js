@@ -32,6 +32,10 @@ export default function register() {
       answer: "The land was conventionally farmed corn and soy until 2023 when it was planted in perennial hay. The clay loam is now compacted and low in organic matter. Because of this, I’ve decided to go HEAVY on compost to add nutrients, improve structure, and bring back the biology required for small scale vegetable production."
     },
     {
+      question: "Is it Organic?",
+      answer: "Obtaining Organic certification is a lengthy process and something for a later year. However, I won't be using any products or practices that are prohibited under Organic standards."
+    },
+    {
       question: "How will communication work?",
       answer: "Beginning in May, I’ll start sending out some email updates. Once the program kicks off around the last week of May, you’ll receive a weekly newsletter with any important information, an update of how things are going, and what will be in your share for the week. Contact me if you have any questions or concerns. Email: hometownharvestllc@gmail.com, phone: (734) 417-9715"
     },
@@ -163,7 +167,8 @@ export default function register() {
     </div>
     <div class={(CSAaboutIsExpanded) ? "csa-about expand" : "csa-about"}>
       <h4 class="about-title">About</h4>
-          <p>This is the first year of a CSA garden located on Zeeb Rd just North of Daly (5185 Zeeb). The produce will be grown on about an acre neighboring a 12-acre leased section. Of course, the first year of anything is a challenge, but I’m confident that we’ll have an abundance of produce and satisfied members. I spent 9 months in Illinois on an intensive, organic vegetable farm (<a target="_blank" href="https://brockmanfamilyfarming.com/henrys-farm/">Henry’s Farm</a>), so I understand what I’m getting into.</p> 
+          <p>This is the first year of a CSA garden located on Zeeb Rd just North of Daly (5185 Zeeb). I do not own the land, although the owners have made me feel like I do. The produce will be grown on about an acre bordering a 10-acre leased section. Of course, the first year of anything is a challenge, but I’m confident that we’ll have an abundance of produce and satisfied members. Along with other experiences, I've completed a 9 month apprenticeship in Illinois on a labor intensive, Organic vegetable farm  (<a target="_blank" href="https://brockmanfamilyfarming.com/henrys-farm/">Henry’s Farm</a>).</p> 
+          <p>The purpose is to grow as much of the highest quality produce possible and to give members the best deal available. High quality produce to me means it’s high in nutrients, free of toxins, and great in taste. Visual appeal is also important to me. Factors like uniformity, transportability, and shelf life which take priority in wholesale markets do not apply so much here. To accomplish this, I’m using compost (from <a target="_blank" href="https://www.wecarecompost.com/wecare-products/locations/ann-arbor-mi/">Ann Arbor Compost Center</a>) instead of chemical fertilizer, alternative pest solutions like native plants instead of pesticides, and mechanical methods of weed removal.</p>
           <p>If all goes to plan, this will be a 25-week CSA beginning late May and running until the first week in November. You’ll get to see a total of 45 different crops throughout the year. Shares will consist of 8-10 items (about $2 per item).  An item being… a bunch of Kale, two heads of lettuce, 2lb bag of spinach (wet), a pint of cherry tomatoes, 3 eggplants, etc. Share sizes will fluctuate depending on productivity. You can see an optimistic, week by week outline of the plan <a target="_blank" href="/CSA-Week-by-Week.pdf">here</a>. There will be choices between certain items (e.g. choose kale or kohlrabi, pick two of three: Bok choi, tatsoi or komatsuna). You may select either Wednesday delivery or Saturday pick-up when you sign up. For the delivery members, there will be a form to complete each week to handle the choice items.</p>
       <span class={(CSAaboutIsExpanded) ? "readmore-link expand" : "readmore-link"} onClick={() => {setCSAaboutIsExpanded(!CSAaboutIsExpanded)}}></span>
     </div>
