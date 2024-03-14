@@ -301,7 +301,7 @@ export default function register() {
             />
           </div>
           </div>
-          {withinDeliveryRange != null && csaSelection == "wednesday home delivery" ? (<span class={`delivery-status ${withinDeliveryRange ? 'text-success' : 'text-danger'}`}>{withinDeliveryRange ? ('Hurray! your address qualifies for Wednesday Delivery.') : 'Sorry, this address does not qualify for wednesday delivery.'}</span>) : (null)}
+          {withinDeliveryRange != null && csaSelection == "wednesday home delivery" ? (<span class={`delivery-status ${withinDeliveryRange ? 'text-success' : 'text-danger'}`}>{withinDeliveryRange ? ('Hurray! your address qualifies for Wednesday Delivery.') : 'Sorry, your address is outside the delivery range.'}</span>) : (null)}
           <button class="submit-btn" type="submit">Submit</button>
         </form>
       <h4>Payment</h4>
