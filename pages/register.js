@@ -230,7 +230,7 @@ export default function register() {
             type="email"
             class="form-control"
             name="email"
-            placeholder="Email (will recieve a weekly newsletter)"
+            placeholder="Email (will receive a weekly newsletter)"
             value={email}
             aria-label="email"
             onChange={e => setEmail(e.target.value)}
