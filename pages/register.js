@@ -91,17 +91,17 @@ export default function register() {
   }, [firstName, lastName, email, phone, address, city, zipCode, csaSelection, withinDeliveryRange]);
   const addMember = async (e) => {
     e.preventDefault();
-    const docRef = await addDoc(collection(db, "Members"),{
-      csaSelection: csaSelection,
-      firstName: firstName,
-      lastName: lastName,
-      email: email,
-      secondEmail: secondEmail,
-      phone: phone,
-      address: address,
-      city: city,
-      zipCode: zipCode
-    });
+    // const docRef = await addDoc(collection(db, "Members"),{
+    //   csaSelection: csaSelection,
+    //   firstName: firstName,
+    //   lastName: lastName,
+    //   email: email,
+    //   secondEmail: secondEmail,
+    //   phone: phone,
+    //   address: address,
+    //   city: city,
+    //   zipCode: zipCode
+    // });
     setFirstName("");
     setLastName("");
     setEmail("");
