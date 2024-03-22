@@ -136,7 +136,7 @@ export default function register() {
   }
   function handleSubmit(e) {
     if (formCompletion === "") {
-      // addMember(e);
+      addMember(e);
       sendMeEmail()
     }else {
       alert(formCompletion)
