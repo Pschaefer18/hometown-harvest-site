@@ -5,12 +5,13 @@ import styles from "./register.css";
 import Head from "next/head";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {db} from "../src/app/firebase";
-import {collection, addDoc} from 'firebase/firestore';
+import {collection, addDoc, serverTimestamp} from 'firebase/firestore';
 import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/router";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCaretRight } from "@fortawesome/free-solid-svg-icons";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
+import emailjs from '@emailjs/browser'
 
 export default function register() {
 
@@ -91,17 +92,18 @@ export default function register() {
   }, [firstName, lastName, email, phone, address, city, zipCode, csaSelection, withinDeliveryRange]);
   const addMember = async (e) => {
     e.preventDefault();
-    // const docRef = await addDoc(collection(db, "Members"),{
-    //   csaSelection: csaSelection,
-    //   firstName: firstName,
-    //   lastName: lastName,
-    //   email: email,
-    //   secondEmail: secondEmail,
-    //   phone: phone,
-    //   address: address,
-    //   city: city,
-    //   zipCode: zipCode
-    // });
+    const docRef = await addDoc(collection(db, "Members"),{
+      csaSelection: csaSelection,
+      firstName: firstName,
+      lastName: lastName,
+      email: email,
+      secondEmail: secondEmail,
+      phone: phone,
+      address: address,
+      city: city,
+      zipCode: zipCode,
+      time: serverTimestamp()
+    });
     setFirstName("");
     setLastName("");
     setEmail("");
@@ -118,9 +120,24 @@ export default function register() {
     }
     router.push(`/register/confirmation-page?amount=${amount}`);
   }
+  const sendMeEmail = () => {
+    emailjs
+            .send('service_6fjtwym', 'template_jav91kj', {name: `${firstName} ${lastName}`}, {
+              publicKey: 'YXPuuE9WWkJni1Uzb',
+            })
+            .then(
+              (response) => {
+                console.log('SUCCESS!', response.status, response.text);
+              },
+              (err) => {
+                console.log('FAILED...', err);
+              },
+            );
+  }
   function handleSubmit(e) {
     if (formCompletion === "") {
-      addMember(e);
+      // addMember(e);
+      sendMeEmail()
     }else {
       alert(formCompletion)
     }}
@@ -194,7 +211,7 @@ export default function register() {
               <div class="form-check">
                 <input class="form-check-input" type="radio" name="flexRadioDefault" value="Sunset Ct" id="flexRadioDefault3" onChange={handleCsaSelectionChange}/>
                 <label class="form-check-label" for="flexRadioDefault3">
-                  I live on Sunset ct and will receive free delivery <b>-$500</b>
+                  I live on Sunset Ct and will receive free delivery <b>-$500</b>
                 </label>
               </div>
         </div>
