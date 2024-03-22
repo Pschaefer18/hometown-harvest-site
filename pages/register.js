@@ -120,9 +120,23 @@ export default function register() {
     }
     router.push(`/register/confirmation-page?amount=${amount}`);
   }
-  const sendMeEmail = () => {
+  const sendUserEmail = () => {
     emailjs
-            .send('service_6fjtwym', 'template_jav91kj', {name: `${firstName} ${lastName}`}, {
+            .send('service_6fjtwym', 'template_jav91kj', {name: `${firstName}`, email: email}, {
+              publicKey: 'YXPuuE9WWkJni1Uzb',
+            })
+            .then(
+              (response) => {
+                console.log('SUCCESS!', response.status, response.text);
+              },
+              (err) => {
+                console.log('FAILED...', err);
+              },
+            );
+  }
+  const addedToNewsletterConfirmation = () => {
+    emailjs
+            .send('service_6fjtwym', 'template_oij7onh', {name: `${firstName} ${lastName}`, email: secondEmail}, {
               publicKey: 'YXPuuE9WWkJni1Uzb',
             })
             .then(
@@ -137,7 +151,8 @@ export default function register() {
   function handleSubmit(e) {
     if (formCompletion === "") {
       addMember(e);
-      sendMeEmail()
+      sendUserEmail()
+      addedToNewsletterConfirmation()
     }else {
       alert(formCompletion)
     }}
