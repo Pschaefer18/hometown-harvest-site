@@ -9,7 +9,7 @@ import {collection, addDoc, serverTimestamp} from 'firebase/firestore';
 import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/router";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCaretRight } from "@fortawesome/free-solid-svg-icons";
+import { faCaretRight, faSleigh } from "@fortawesome/free-solid-svg-icons";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import emailjs from '@emailjs/browser'
 
@@ -102,7 +102,8 @@ export default function register() {
       address: address,
       city: city,
       zipCode: zipCode,
-      time: serverTimestamp()
+      time: serverTimestamp(),
+      paymentReceived: false
     });
     setFirstName("");
     setLastName("");
