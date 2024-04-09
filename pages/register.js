@@ -352,7 +352,7 @@ export default function register() {
           <div class="col-sm-6 payment-option">
             <h5>Pay with Venmo</h5>
             <Image src="/MyVenmoQRCode.png" width="150" height="204" alt="venmo QR Code" />
-            <p>Venmo handle: @pschaefer18</p>
+            <p>Venmo Email: paul.r.schaefer11@gmail.com</p>
           </div>
         </div>
         <div class="payment-info">

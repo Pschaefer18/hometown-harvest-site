@@ -135,6 +135,36 @@
     margin-top: 5%;
     text-align: left;
   }
+  input[type="radio"] {
+    border: 1.5px solid black;
+    color: black;
+  }
+  input[type="radio"]:checked {
+    background-color: black; /* Change background color on selection */
+    border-color: black;
+  }
+  .input[type="radio"] {
+    border:0; 
+    padding:10px; 
+    font-size:1.3em; 
+    font-family:"Ubuntu Light","Ubuntu","Ubuntu Mono","Segoe Print","Segoe UI";
+    color:#ccc; 
+    border:solid 1px #ccc; 
+    margin:0 0 20px; 
+    width:300px;
+    -moz-box-shadow: inset 0 0 4px rgba(0,0,0,0.2); 
+    -webkit-box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.2); 
+    box-shadow: inner 0 0 4px rgba(0, 0, 0, 0.2);
+    -webkit-border-radius: 3px; 
+    -moz-border-radius: 3px; 
+    border-radius: 3px;    
+  }
+
+  input[type="radio"]:focus { 
+    outline: none !important;
+    border-color: #000000;
+    box-shadow: 0 0 10px #000000;
+  }
   .csa-selection {
     margin-bottom: 10px;
   }
