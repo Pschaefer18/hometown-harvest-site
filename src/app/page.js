@@ -8,8 +8,19 @@ import {db} from "./firebase"
 import {collection, addDoc} from 'firebase/firestore';
 import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
+import bootstrap from 'bootstrap';
+import Carousel from "../components/Carousel";
 
 export default function Home() {
+  const images = [
+    { src: '/IMG_1352.JPEG', alt: 'Image 1', title: 'Slide 1', description: 'This is the first slide description' },
+    { src: '/IMG_1400.JPEG', alt: 'Image 1', title: 'Slide 1', description: 'This is the first slide description' },
+    { src: '/IMG_1224.JPEG', alt: 'Image 1', title: 'Slide 1', description: 'This is the first slide description' },
+    { src: '/IMG_1366.JPEG', alt: 'Image 1', title: 'Slide 1', description: 'This is the first slide description' },
+    { src: '/IMG_1409.JPEG', alt: 'Image 1', title: 'Slide 1', description: 'This is the first slide description' },
+    { src: '/IMG_1414.JPEG', alt: 'Image 1', title: 'Slide 1', description: 'This is the first slide description' }
+    // ... other image objects
+  ];
 
   return (
     <>
@@ -27,10 +38,13 @@ export default function Home() {
     <div>
       <div class="homepage">
         <div class="container">
-          <h2>Site will be up next year</h2>
-          <h3>For now, sign up for the 2024 CSA</h3>
+          <h2>Website Coming Soon</h2>
+          <h4>Register today using the button below</h4>
         </div>
-        <Link class="sign-up" href="/register"><button class="btn btn-dark">Sign-up Now</button></Link>
+        <div class="carousel-container">
+          <Carousel images={images} />
+        </div>
+        <Link class="sign-up" href="/register"><button class="btn btn-dark">CSA Sign-up Form</button></Link>
       </div>
     </div>
     </>

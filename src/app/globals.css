@@ -1,7 +1,16 @@
 .homepage {
-  margin: 10% auto;
   text-align: center;
+  margin-top: 4%;
+}
+.homepage .carousel-container {
+  margin: auto;
+  padding: 1% 5%;
+  max-width: 1000px;
+  margin-bottom: 15px;
 }
 .container {
   margin-bottom: 50px;
+}
+.sign-up button {
+  font-size: large;
 }

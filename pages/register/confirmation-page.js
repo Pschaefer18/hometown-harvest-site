@@ -10,7 +10,7 @@ export default function confirmationPage() {
         <div class='body'>
             <h2>Your form has been submitted</h2>
             <h3>Thank you for signing up!</h3>
-            <p>Please send ${amount} to Paul Schaefer by May 1st</p>
+            <p>Please send ${amount} to Paul Schaefer by May 18th</p>
             <p>Mail checks to the following address or hand deliver to me</p>
             <p>4161 Sunset Ct, Ann Arbor, MI 48103</p>
             <h3>If you decide to cancel your membership</h3>
