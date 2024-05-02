@@ -10,6 +10,8 @@ import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import Carousel from "../components/Carousel";
 
+
+
 export default function Home() {
   const images = [
     { src: '/IMG_1352.JPEG', alt: 'Image 1', title: 'Slide 1', description: 'This is the first slide description' },
