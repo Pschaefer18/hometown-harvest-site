@@ -38,7 +38,7 @@ export default function register() {
     },
     {
       question: "How will communication work?",
-      answer: "Beginning in May, I’ll start sending out some email updates. Once the program kicks off around the last week of May, you’ll recieve a weekly newsletter with any important information, an update of how things are going, and what will be in your share for the week. Contact me if you have any questions or concerns. Email: hometownharvestllc@gmail.com, phone: (734) 417-9715"
+      answer: "Beginning in May, I’ll start sending out some email updates. Once the program kicks off around the last week of May, you’ll receive a weekly newsletter with any important information, an update of how things are going, and what will be in your share for the week. Contact me if you have any questions or concerns. Email: hometownharvestllc@gmail.com, phone: (734) 417-9715"
     },
     {
       question: "What if I’m gone for a week and can’t pick up my share?",
