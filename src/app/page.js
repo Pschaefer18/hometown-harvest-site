@@ -35,13 +35,13 @@ export default function Home() {
       <div class="homepage">
         <div class="container">
           <h2>Website Coming Soon</h2>
-          <h4>Register today using the button below</h4>
+          <h4>Register online using the button below</h4>
         </div>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
         <div class="carousel-container">
           <Carousel images={images} />
         </div>
-        <Link class="sign-up" href="/register"><button class="btn btn-dark">CSA Sign-up Form</button></Link>
+        <Link class="sign-up" href="/register"><button class="btn btn-dark">CSA Sign-up Page</button></Link>
       </div>
     </div>
     </>
