@@ -105,6 +105,7 @@ export default function register() {
       city: city,
       zipCode: zipCode,
       time: serverTimestamp(),
+      deliveryPrice: deliveryPrice,
       paymentReceived: false
     });
     setFirstName("");
@@ -117,7 +118,7 @@ export default function register() {
     setZipCode("");
     var amount = 0;
     if (csaSelection === "homeDelivery") {
-        amount = homeDeliveryPrice
+        amount = deliveryPrice
     } else {
         amount = 500
     }
