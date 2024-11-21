@@ -43,7 +43,7 @@ export default function Home() {
         <h2 class="section-title">CSA Program</h2>
         <div class="share-examples">
           <div class="share">
-            <Image src="/IMG_1513 - Copy.jpeg" width="230" height="307"/>
+            <img src="/IMG_1513-Copy.jpeg" width="230" height="307"/>
             <h7>Example of share in July</h7>
           </div>
           <div class="csa-definition">
@@ -52,7 +52,7 @@ export default function Home() {
             </p>
           </div>
           <div class="share">
-            <Image src="/IMG_1655 - Copy.jpeg" width="230" height="307"/>
+            <img src="/IMG_1655-Copy.jpeg" width="230" height="307"/>
             <h7>Example of share in October</h7>
           </div>
         </div>
