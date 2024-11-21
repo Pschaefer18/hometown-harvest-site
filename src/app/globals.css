@@ -153,3 +153,11 @@ section {
     text-align: left;
   }
 }
+@media screen and (max-width: 850px) {
+  .banner-subtitle {
+    font-size: small;
+  }
+  .banner-title {
+    font-size: medium;
+  }
+}

@@ -221,8 +221,8 @@ export default function register() {
       <Image class="banner-img" src="/Hometown Harvest Logo (transparent background).png" width="2000" height="2000" alt="logo"/>
       <div class="banner-text">
         <div class="banner-titles">
-          <h1>2025 CSA Registration</h1>
-          <h7>Form is to be completed and submitted online only</h7>
+          <h1 class="banner-title">2025 CSA Registration</h1>
+          <h7 class="banner-subtitle">Form is to be completed and submitted online only</h7>
         </div>
         
       </div>
@@ -341,7 +341,7 @@ export default function register() {
           </div>
           </div>
           <h4>Select An Option </h4>
-          <p>You may either pick up your weekly share at the garden (5185 Zeeb Rd) from 12 to 6PM on Saturdays or choose to have it delivered on Wednesdays around 4PM. Delivery rates vary based on your location.</p>
+          <p>You may either pick up your weekly share at the garden (5185 Zeeb Rd) from 12 to 6PM on Saturdays or choose to have it delivered on Tuesdays around 4PM. Delivery rates vary based on your location.</p>
       <div class="row csa-options">
           <div class="col option" style={csaSelection == "gardenPickup" ? {color: '#f1f1f1', backgroundColor: 'black'} : {color: 'black', backgroundColor: '#f1f1f1'}}>
             <input type="radio" id="gardenPickup" name="csaOption" value="gardenPickup" onChange={handleCsaSelectionChange}/>
