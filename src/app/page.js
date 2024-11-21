@@ -36,7 +36,7 @@ export default function Home() {
         <Navbar />
         <div class="homepage-title-container">
           <h1>Registration for the 2025 CSA is now open</h1>
-          <Link class="sign-up-link" href="/register">Click here to signup</Link>
+          <Link class="sign-up-link" href="/register">Click here to sign up</Link>
         </div>
         <img class="homepage-image" src="/HH_Hompage_Image.png"/>
         <section>
