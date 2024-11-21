@@ -117,7 +117,7 @@ export default function register() {
     setZipCode("");
     var amount = 0;
     if (csaSelection === "homeDelivery") {
-        amount = 625
+        amount = homeDeliveryPrice
     } else {
         amount = 500
     }
@@ -125,7 +125,7 @@ export default function register() {
   }
   const sendUserEmail = () => {
     emailjs
-            .send('service_6fjtwym', 'template_jav91kj', {name: `${firstName}`, email: email}, {
+            .send('service_6fjtwym', 'template_jav91kj', {amount: `${amount}`, name: `${firstName}`, email: email}, {
               publicKey: 'YXPuuE9WWkJni1Uzb',
             })
             .then(
