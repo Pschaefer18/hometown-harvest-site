@@ -5,7 +5,7 @@ import styles from "./register.css";
 import Head from "next/head";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {db} from "../src/app/firebase";
-import {collection, addDoc, serverTimestamp} from 'firebase/firestore';
+import {collection, doc, setDoc, serverTimestamp} from 'firebase/firestore';
 import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/router";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -64,7 +64,8 @@ export default function register() {
   const [address, setAddress] = useState("");
   const [city, setCity] = useState("");
   const [zipCode, setZipCode] = useState("");
-  const [withinDeliveryRange, setWithinDeliveryRange] = useState(null);
+  const [recognizedAddress, setRecognizedAddress] = useState(null);
+  const [deliveryPrice, setDeliveryPrice] = useState(null);
   const [formCompletion, setFormCompletion] = useState("please fill out all fields");
   const [isOpen, setIsOpen] = useState(Array(FAQs.length).fill(false));
   const router = useRouter();
@@ -72,8 +73,8 @@ export default function register() {
   useEffect(() => {
     if (firstName && lastName && email && phone && address && city && zipCode) {
 
-      if (csaSelection === "wednesday home delivery") {
-        if (withinDeliveryRange) {
+      if (csaSelection === "homeDelivery") {
+        if (recognizedAddress) {
           setFormCompletion("");
         } else {
           setFormCompletion("Your address is outside of the delivery range, either move somewhere closer or pickup at the garden :)");
@@ -89,10 +90,11 @@ export default function register() {
     else {
       setFormCompletion("please fill out all fields");
   }
-  }, [firstName, lastName, email, phone, address, city, zipCode, csaSelection, withinDeliveryRange]);
+  }, [firstName, lastName, email, phone, address, city, zipCode, csaSelection, recognizedAddress]);
   const addMember = async (e) => {
     e.preventDefault();
-    const docRef = await addDoc(collection(db, "Members"),{
+    const docRef = doc(db, "2025 Members", `${firstName} ${lastName}`)
+    await setDoc(docRef,{
       csaSelection: csaSelection,
       firstName: firstName,
       lastName: lastName,
@@ -114,7 +116,7 @@ export default function register() {
     setCity("");
     setZipCode("");
     var amount = 0;
-    if (csaSelection === "wednesday home delivery") {
+    if (csaSelection === "homeDelivery") {
         amount = 625
     } else {
         amount = 500
@@ -157,20 +159,42 @@ export default function register() {
     }else {
       alert(formCompletion)
     }}
+    const GetOptimizedRouteLength = async(waypoints) => {
+      const response = await fetch(`/api/googleMaps?waypoints=${waypoints}`)
+      const data = await response.json();
+      var totalRouteMeters = 0
+      data.routes[0].legs.forEach(leg => totalRouteMeters += leg.distance.value)
+      return totalRouteMeters
+      }
   const handleAddressBlur = async(event) => {
       console.log("blur")
       if (address && city) {
-        const destination = `${address}, ${city}`;
+        const waypoint = `${address}, ${city}`;
         try {
-            const response = await fetch(`/api/googleMaps?destination=${destination}`)
-            const data = await response.json();
-        // compare response value in meters (13250 =~8.25 mi)
-            if (data.routes[0].legs[0].distance.value < 13250) {
-              setWithinDeliveryRange(true);
+            var currentMemberAddresses = ["4100 sunset ct, ann arbor", "2109 arlene st, ann arbor", "4730 whitman circle, ann arbor", "2277 gray fox court, ann arbor", "2525 blueberry lane, ann arbor", "4598 east loch alpine, ann arbor", "3676 huron court, ann arbor"]
+            var omittedAddresses = ["4100 sunset ct, ann arbor", "2109 arlene st, ann arbor", "4730 whitman circle, ann arbor", "2277 gray fox court, ann arbor", "2525 blueberry lane, ann arbor", "4598 east loch alpine, ann arbor", "3676 huron court, ann arbor"]
+            var admittedAddresses = ["4100 sunset ct, ann arbor", "2109 arlene st, ann arbor", "4730 whitman circle, ann arbor", "2277 gray fox court, ann arbor", "2525 blueberry lane, ann arbor", "4598 east loch alpine, ann arbor", "3676 huron court, ann arbor"]
+            var omittedCalc = 0
+            var admittedCalc = 0
+            if (currentMemberAddresses.includes(waypoint.toLowerCase())) {
+              omittedAddresses.splice(currentMemberAddresses.indexOf(waypoint.toLowerCase()), 1)
+              console.log("removed")
             } else {
-              setWithinDeliveryRange(false);
-            }} catch (error) {
-                setWithinDeliveryRange(false);
+              admittedAddresses.push(waypoint)
+              console.log("added")
+            }
+            const omittedWaypoints = omittedAddresses.join('|')
+            const admittedWaypoints = admittedAddresses.join('|')
+            console.log(omittedAddresses)
+            console.log(admittedAddresses)
+            const omittedRouteLength = await GetOptimizedRouteLength(omittedWaypoints)
+            const admittedRouteLength = await GetOptimizedRouteLength(admittedWaypoints)
+            const routeLengthDifference = admittedRouteLength - omittedRouteLength
+            const homeDeliveryPrice = Math.round((500 + ((routeLengthDifference / 1609) * 0.5 + 3) * 24) / 5) * 5
+            setDeliveryPrice(homeDeliveryPrice)
+            } catch (error) {
+                setRecognizedAddress(false);
+                console.log(error)
             }
 
     }
@@ -186,7 +210,7 @@ export default function register() {
   return (
     <>
     <Head>
-      <title>2024 CSA Registration</title>
+      <title>2025 CSA Registration</title>
       <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
@@ -194,44 +218,26 @@ export default function register() {
     </Head>
     <div class="body">
     <div class="banner">
-      <Image class="banner-img" src="/Web-logo-long.jpg" width="2000" height="175" alt="logo"/>
-      <h1>2024 CSA Registration</h1>
-      <h6 class="h6">25 week CSA providing 8-10 items weekly</h6>
+      <Image class="banner-img" src="/Hometown Harvest Logo (transparent background).png" width="2000" height="2000" alt="logo"/>
+      <div class="banner-text">
+        <div class="banner-titles">
+          <h1>2025 CSA Registration</h1>
+          <h7>Form is to be completed and submitted online only</h7>
+        </div>
+        
+      </div>
     </div>
-    <div class={(CSAaboutIsExpanded) ? "csa-about expand" : "csa-about"}>
+    {/* <div class={(CSAaboutIsExpanded) ? "csa-about expand" : "csa-about"}>
       <h4 class="about-title">About</h4>
           <p>This is the first year of a CSA garden located on Zeeb Rd just North of Daly (5185 Zeeb). I do not own the land, although the owners have made me feel like I do. The produce will be grown on about an acre bordering a 10-acre leased section. Of course, the first year of anything is a challenge, but I’m confident that we’ll have an abundance of produce and satisfied members. Along with other experiences, I've completed a 9 month apprenticeship in Illinois on a labor intensive, Organic vegetable farm  (<a target="_blank" href="https://brockmanfamilyfarming.com/henrys-farm/">Henry’s Farm</a>).</p> 
           <p>The purpose is to grow as much of the highest quality produce possible and to give members the best deal available. High quality produce to me means it’s high in nutrients, free of toxins, and great in taste. Visual appeal is also important to me. Factors like uniformity, transportability, and shelf life which take priority in wholesale markets do not apply so much here. To accomplish this, I’m using compost (from <a target="_blank" href="https://www.wecarecompost.com/wecare-products/locations/ann-arbor-mi/">Ann Arbor Compost Center</a>) instead of chemical fertilizer, alternative pest solutions like native plants instead of pesticides, and mechanical methods of weed removal.</p>
           <p>If all goes to plan, this will be a 25-week CSA beginning the last week of May and running until early November. You’ll get to see a total of 45 different crops throughout the year. Shares will consist of 8-10 items (about $2 per item).  An item being… a bunch of Kale, two heads of lettuce, 2lb bag of spinach (wet), a pint of cherry tomatoes, 3 eggplants, etc. Share sizes will fluctuate depending on productivity. You can see an optimistic, week by week outline of the plan <a target="_blank" href="/CSA-Week-by-Week.pdf">here</a>. There will be choices between certain items (e.g. choose kale or kohlrabi, pick two of three: Bok choi, tatsoi or komatsuna). You may select either Wednesday delivery or Saturday pick-up when you sign up. For the delivery members, there will be a form to complete each week to handle the choice items.</p>
       <span class={(CSAaboutIsExpanded) ? "readmore-link expand" : "readmore-link"} onClick={() => {setCSAaboutIsExpanded(!CSAaboutIsExpanded)}}></span>
-    </div>
+    </div> */}
     <form class="form" onSubmit={(e) => {
       e.preventDefault();
       handleSubmit(e);
     }}>
-        <h4>Pick up/Delivery </h4>
-      <div class="row">
-        <div class="col csa-selection">
-            <div class="form-check">
-                <input class="form-check-input" type="radio" name="flexRadioDefault" value="saturday pick up" id="flexRadioDefault1" onChange={handleCsaSelectionChange} />
-                <label class="form-check-label" for="flexRadioDefault1">
-                  Saturday pick up at garden (5185 Zeeb Rd) <b>-$500</b>
-                </label>
-              </div>
-              <div class="form-check">
-                <input class="form-check-input" type="radio" name="flexRadioDefault" value="wednesday home delivery" id="flexRadioDefault2" onChange={handleCsaSelectionChange}/>
-                <label class="form-check-label" for="flexRadioDefault2">
-                  Wednesday home delivery ($5 per week more) *must qualify* <b>-$625</b>
-                </label>
-              </div>
-              <div class="form-check">
-                <input class="form-check-input" type="radio" name="flexRadioDefault" value="Sunset Ct" id="flexRadioDefault3" onChange={handleCsaSelectionChange}/>
-                <label class="form-check-label" for="flexRadioDefault3">
-                  I live on Sunset Ct and will receive free delivery <b>-$500</b>
-                </label>
-              </div>
-        </div>
-      </div>
         <h4>Contact Info</h4>
       <div class="row">
         <div class="col-sm-6 col-12">
@@ -334,7 +340,44 @@ export default function register() {
             />
           </div>
           </div>
-          {withinDeliveryRange != null && csaSelection == "wednesday home delivery" ? (<span class={`delivery-status ${withinDeliveryRange ? 'text-success' : 'text-danger'}`}>{withinDeliveryRange ? ('Hurray! your address qualifies for Wednesday Delivery.') : 'Sorry, your address is outside the delivery range.'}</span>) : (null)}
+          <h4>Select An Option </h4>
+          <p>You may either pick up your weekly share at the garden (5185 Zeeb Rd) from 12 to 6PM on Saturdays or choose to have it delivered on Wednesdays around 4PM. Delivery rates vary based on your location.</p>
+      <div class="row csa-options">
+          <div class="col option" style={csaSelection == "gardenPickup" ? {color: '#f1f1f1', backgroundColor: 'black'} : {color: 'black', backgroundColor: '#f1f1f1'}}>
+            <input type="radio" id="gardenPickup" name="csaOption" value="gardenPickup" onChange={handleCsaSelectionChange}/>
+            <label for="gardenPickup">
+                <h3>Garden Pickup</h3>
+                <Image class="image" src={csaSelection == "gardenPickup" ? "/man-carrying-package-gray.png" : "/man-carrying-package.png"} width="100" height="100"/>
+                <h6>About $21 Per Week</h6>
+                <h4>$500</h4>
+            </label>
+          </div>
+          
+          <div class="col option" style={csaSelection == "homeDelivery" ? {color: '#f1f1f1', backgroundColor: 'black'} : {color: 'black', backgroundColor: '#f1f1f1'}}>
+            <input type="radio" id="homeDelivery" name="csaOption" value="homeDelivery" onChange={handleCsaSelectionChange}/>
+            <label for="homeDelivery">
+                <h3>Home Delivery</h3>
+                <Image class="image" src={csaSelection == "homeDelivery" ? "/express-delivery-gray.png" : "/express-delivery.png"} width="100" height="100"/>
+                <h6>{deliveryPrice ? `About $${Math.round((deliveryPrice-500) / 24)} per week more` : "Enter Address to calculate price"}</h6>
+                <h4>{deliveryPrice ? `$${deliveryPrice}`: '$ ???'}</h4>
+            </label>
+          </div>
+          
+          
+            {/* <div class="form-check">
+
+                <input class="form-check-input" type="radio" name="flexRadioDefault" value="saturday pick up" id="flexRadioDefault1" onChange={handleCsaSelectionChange} />
+                <label class="form-check-label" for="flexRadioDefault1">
+                  Saturday pick up at garden (5185 Zeeb Rd) <b>-$500</b>
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="flexRadioDefault" value="homeDelivery" id="flexRadioDefault2" onChange={handleCsaSelectionChange}/>
+                <label class="form-check-label" for="flexRadioDefault2">
+                  homeDelivery {deliveryPrice ? <b>{500+deliveryPrice}</b> : <><b>-???</b> enter address to view your price</>}
+                </label>
+              </div> */}
+      </div>
           <button class="submit-btn" type="submit">Submit</button>
         </form>
       <h4>Payment</h4>

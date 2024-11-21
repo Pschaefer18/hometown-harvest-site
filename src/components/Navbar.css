@@ -1,0 +1,28 @@
+.navbar {
+    background-color: #e9e9e9;
+    width: 100%;
+    padding: 5px 50px;
+    justify-content: normal;
+}
+.logo {
+    width: 120px;
+}
+.nav-links {
+    list-style-type: none;
+}
+.nav-links li{
+    font-size: 32px;
+    display: inline-block;
+    margin: 20px 20px 0 20px;
+}
+.nav-links li:hover {
+    cursor: pointer;
+}
+@media (max-width: 768px) {
+    .nav-links {
+        display: none;
+    }
+    .logo {
+        margin: auto;
+    }
+}
