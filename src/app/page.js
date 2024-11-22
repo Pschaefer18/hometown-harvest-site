@@ -13,15 +13,9 @@ import Navbar from "@/components/Navbar";
 
 
 export default function Home() {
-  const images = [
-    { src: '/IMG_1352.JPEG', alt: 'Image 1', title: 'Slide 1', description: 'This is the first slide description' },
-    { src: '/IMG_1400.JPEG', alt: 'Image 1', title: 'Slide 1', description: 'This is the first slide description' },
-    { src: '/IMG_1224.JPEG', alt: 'Image 1', title: 'Slide 1', description: 'This is the first slide description' },
-    { src: '/IMG_1366.JPEG', alt: 'Image 1', title: 'Slide 1', description: 'This is the first slide description' },
-    { src: '/IMG_1409.JPEG', alt: 'Image 1', title: 'Slide 1', description: 'This is the first slide description' },
-    { src: '/IMG_1414.JPEG', alt: 'Image 1', title: 'Slide 1', description: 'This is the first slide description' }
-    // ... other image objects
-  ];
+  const aboutRef = useRef(null);
+  const csaProgramRef = useRef(null);
+
   return (
     <>
     <Head>
@@ -33,14 +27,14 @@ export default function Home() {
     </Head>
     <div class="homepage">
       <div class="body">
-        <Navbar />
+        <Navbar aboutRef={aboutRef} csaProgramRef={csaProgramRef}/>
         <div class="homepage-title-container">
           <h1>Registration for the 2025 CSA is now open</h1>
           <Link class="sign-up-link" href="/register">Click here to sign up</Link>
         </div>
         <img class="homepage-image" src="/HH_Hompage_Image.png"/>
         <section>
-        <h2 class="section-title">CSA Program</h2>
+        <h2 ref={csaProgramRef}class="section-title">CSA Program</h2>
         <div class="share-examples">
           <div class="share">
             <img src="/IMG_1513.png" width="230" height="307"/>
@@ -60,7 +54,7 @@ export default function Home() {
           <div class="What-to-expect">
             <h3>What to expect</h3>
             <p>
-            The program runs 24 Weeks from the first week of June into early November. A typical share will have 7 to 9 items. At about $21 per share, you’re looking at $2.50 per item (examples of items shown above). I intend to provide good variety from week to week, however, this does rely on crop success. I also intend to provide choices between items.
+            The program runs 24 weeks from the first week of June into early November. A typical share will have 7 to 9 items. At about $21 per share, you’re looking at $2.50 per item (examples of items shown above). I intend to provide good variety from week to week, however, this does rely on crop success. I also intend to provide choices between items.
             </p>
           </div>
           <div class="Logistics">
@@ -300,7 +294,7 @@ export default function Home() {
               </div>
         </div>
       </section>
-      <section class="about">
+      <section ref={aboutRef} class="about">
         <h3 class="section-title">About</h3>
         <p>My name is Paul and I’ve started a garden located on Zeeb Rd just North of Daly (5185 Zeeb). I do not own the land, but the owners have made me feel like I do. In the first year (2024) I grew about 45 different types of vegetables on an acre plot and offered a 25 week CSA to 25 members. For the 2025 season, I plan to increase the plot, grow a few more types of vegetables and scale up the CSA program to 60 people. I also plan to sell some produce at the Whitney Farmstead (5525 Jennings Rd) on Wednesdays.</p>
         <h4>Growing Practices</h4>

@@ -1,16 +1,13 @@
 import React, { useRef } from 'react';
 import './Navbar.css'; // Import your CSS file for styling
 
-const Navbar = () => {
-  const homeRef = useRef(null);
-  const csaRef = useRef(null);
-  const aboutRef = useRef(null);
+const Navbar = ({ aboutRef, csaProgramRef }) => {
+  const handleScrollToAbout = () => {
+    aboutRef.current.scrollIntoView({ behavior: 'smooth' });
+  };
 
-  const scrollToSection = (ref) => {
-    window.scrollTo({
-      top: ref.current.offsetTop,
-      behavior: 'smooth'
-    });
+  const handleScrollToCsa = () => {
+    csaProgramRef.current.scrollIntoView({ behavior: 'smooth' });
   };
 
   return (
@@ -21,8 +18,8 @@ const Navbar = () => {
       </div>
       <ul className="nav-links">
         <li onClick={() => scrollToSection(homeRef)}>Home</li>
-        <li onClick={() => scrollToSection(csaRef)}>CSA Program</li>
-        <li onClick={() => scrollToSection(aboutRef)}>About</li>
+        <li onClick={handleScrollToCsa}>CSA Program</li>
+        <li onClick={handleScrollToAbout}>About</li>
       </ul>
     </nav>
   );

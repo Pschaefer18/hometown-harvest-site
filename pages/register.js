@@ -125,6 +125,11 @@ export default function register() {
     router.push(`/register/confirmation-page?amount=${amount}`);
   }
   const sendUserEmail = () => {
+    if (csaSelection === "homeDelivery") {
+      amount = deliveryPrice
+    } else {
+      amount = 500
+    }
     emailjs
             .send('service_6fjtwym', 'template_jav91kj', {amount: `${amount}`, name: `${firstName}`, email: email}, {
               publicKey: 'YXPuuE9WWkJni1Uzb',
