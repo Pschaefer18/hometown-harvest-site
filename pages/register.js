@@ -37,12 +37,12 @@ export default function register() {
       answer: "Obtaining Organic certification is a lengthy process and something for a later year. However, I won't be using any products or practices that are prohibited under Organic standards."
     },
     {
-      question: "How will communication work?",
-      answer: "Beginning in May, I’ll start sending out some email updates. Once the program kicks off around the last week of May, you’ll receive a weekly newsletter with any important information, an update of how things are going, and what will be in your share for the week. Contact me if you have any questions or concerns. Email: hometownharvestllc@gmail.com, phone: (734) 417-9715"
+      question: "What is the best way to contact you?",
+      answer: "If it's a timely or important matter regarding your share pickup or delivery, please call or text me at (734)-417-9715. Otherwise you can email hometownharvestllc@gmail.com, I just may not see it right away. If I don't respond to an important email, just call or text."
     },
     {
       question: "What if I’m gone for a week and can’t pick up my share?",
-      answer: "If you know ahead of time that you'll be absent for a CSA pickup/delivery, please contact me by text or email at least one week before (see contact info at bottom of page). As long as I'm aware before harvesting time, you'll be able to receive a double share the following week. This does not, however, carry over for a third week. If you fail to notify me, someone will eat your share and you won't be getting a double share."
+      answer: "If you know ahead of time that you'll be absent for a CSA pickup/delivery, please text me as soon as you can. As long as I'm aware before harvesting time, you'll be able to receive a double share the following week. This does not, however, carry over for a third week. If you fail to notify me, someone will eat your share and you won't be getting a double share."
     },
     {
       question: "What if I forget to pick up my share?",
@@ -50,7 +50,7 @@ export default function register() {
     },
     {
       question: "Can I come visit?",
-      answer: "Yes, whether you’ve already signed up or are considering signing up, you are always welcome to come visit. Just be sure to message me (734-417-9715) in advance to set up a time. If you’re trying to decide if you want to join the program, I can talk and show you around. Otherwise, you’ll be on your own to explore."
+      answer: "Yes, whether you’ve already signed up or are considering signing up, you are always welcome to come visit. Just be sure to message me (734-417-9715) in advance to set up a time."
     }
   ]
   const [CSAaboutIsExpanded, setCSAaboutIsExpanded] = useState(false);

@@ -161,3 +161,39 @@ section {
     font-size: medium;
   }
 }
+.faq-title {
+  margin: 30px auto 25px auto;
+}
+.csa-faq {
+  text-align: left;
+}
+.csa-faq ul {
+  list-style-type: none;
+}
+.csa-faq li div {
+  display: inline-flex; /* Combine elements inline */
+  align-items: center; /* Align content vertically */
+}
+.csa-faq li div h5 {
+  margin-left: 10px;
+  margin-bottom: 0;
+}
+.csa-about h4 {
+  text-align: center;
+}
+.csa-faq h5 {
+  margin-bottom: 10px;
+}
+.faq:hover {
+  cursor: pointer;
+}
+.faq-answer {
+  max-height: 0px;
+  overflow: hidden;
+  transition: max-height 0.4s ease-out; /* Adjust duration and timing as desired */
+}
+
+.faq-answer.open {
+  max-height: 350px;
+  transition: max-height 0.4s ease-in-out; /* Adjust duration and timing as desired */
+}

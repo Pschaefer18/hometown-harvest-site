@@ -10,11 +10,58 @@ import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import Carousel from "../components/Carousel";
 import Navbar from "@/components/Navbar";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCaretRight, faSleigh } from "@fortawesome/free-solid-svg-icons";
+import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 
 
 export default function Home() {
+  const FAQs = [
+    {
+      question: "What is a CSA?",
+      answer: `"CSA" stands for "Community Supported Agriculture". Today’s CSAs tend to be a subscription where the customer makes an up-front payment and receives a box of produce each week throughout the growing season (this one is no different).  The first CSAs took place in Japan in response to concern around chemicals used in farming. The new iteration we know today in North America took off in the 80s and, although similar, formed independently of the Japanese and is based on Rudolph Steiner's ideas from the 1920s.`
+    },
+    {
+      question: "What risk am I taking?",
+      answer: `As a CSA member, you are sharing risk, not unlike an investor. You should be aware of what those risks are and how they apply in our case. I’ve done my best to provide an overview of **link** and which ones I am concerned about.`,
+      link: {
+              href: "/Threats.pdf",
+              placeholder: "common threats to small growers"
+            }
+    },
+    {
+      question: "What is the history of the land?",
+      answer: "The land was conventionally farmed corn and soy until 2023 when it was planted in perennial hay. The clay loam is now compacted and low in organic matter. Because of this, I’ve decided to go HEAVY on compost to add nutrients, improve structure, and bring back the biology required for small scale vegetable production."
+    },
+    {
+      question: "Is it Organic?",
+      answer: "Obtaining Organic certification is a lengthy process and something for a later year. However, I won't be using any products or practices that are prohibited under Organic standards."
+    },
+    {
+      question: "What is the best way to contact you?",
+      answer: "If it's a timely or important matter regarding your share pickup or delivery, please call or text me at (734)-417-9715. Otherwise you can email hometownharvestllc@gmail.com, I just may not see it right away. If I don't respond to an important email, just call or text."
+    },
+    {
+      question: "What if I’m gone for a week and can’t pick up my share?",
+      answer: "If you know ahead of time that you'll be absent for a CSA pickup/delivery, please text me as soon as you can. As long as I'm aware before harvesting time, you'll be able to receive a double share the following week. This does not, however, carry over for a third week. If you fail to notify me, someone will eat your share and you won't be getting a double share."
+    },
+    {
+      question: "What if I forget to pick up my share?",
+      answer: "I understand that many of my members have chaotic lives and picking up a box of produce might not be of top priority. If you realize you forgot to pick up your share, it will be held for 24 hours, and you can pick it up the next morning. After that, someone will eat it. I don’t plan to keep track of who’s picked up and who hasn’t, so I won’t be able to notify you if you forget."
+    },
+    {
+      question: "Can I come visit?",
+      answer: "Yes, whether you’ve already signed up or are considering signing up, you are always welcome to come visit. Just be sure to message me (734-417-9715) in advance to set up a time."
+    }
+  ]
   const aboutRef = useRef(null);
   const csaProgramRef = useRef(null);
+  const [isOpen, setIsOpen] = useState(Array(FAQs.length).fill(false));
+  const toggleFaq = (key) => {
+    var newArray = [...isOpen];
+    newArray[key] =!isOpen[key];
+    setIsOpen(newArray);
+  }
 
   return (
     <>
@@ -293,13 +340,34 @@ export default function Home() {
                 </div>
               </div>
         </div>
+        <h4 class="faq-title">Frequently Asked Questions</h4>
+      <div class="csa-faq">
+        <ul>
+          {FAQs.map((faq, key) => (
+            <li key={key}>
+              <div class="faq" onClick={() => toggleFaq(key)}><FontAwesomeIcon icon={isOpen[key] ? (faCaretDown):(faCaretRight)} width="20px" height="20px" class="icon"/><h5>{faq.question}</h5></div>
+              <p class={`faq-answer ${isOpen[key] ? "open" : ""}`}>
+                {faq.answer.split(' ').map((word, index) => (
+                  <span key={index}>
+                    {word ===  "**link**"? ( // Replace '**link**' with actual link
+                      <a href={faq.link.href}>
+                        {faq.link.placeholder}
+                      </a>
+                    ) : ( word )}
+                {' '} {/* Add a space after each word */}
+                  </span>
+    ))}
+  </p>
+            </li>
+          ))}
+        </ul>
+      </div>
       </section>
       <section ref={aboutRef} class="about">
         <h3 class="section-title">About</h3>
         <p>My name is Paul and I’ve started a garden located on Zeeb Rd just North of Daly (5185 Zeeb). I do not own the land, but the owners have made me feel like I do. In the first year (2024) I grew about 45 different types of vegetables on an acre plot and offered a 25 week CSA to 25 members. For the 2025 season, I plan to increase the plot, grow a few more types of vegetables and scale up the CSA program to 60 people. I also plan to sell some produce at the Whitney Farmstead (5525 Jennings Rd) on Wednesdays.</p>
         <h4>Growing Practices</h4>
-        <p>Growing vegetables on a small scale and serving customers directly has great advantages. Because the product is not being shipped across the country, I can select varieties that focus on taste instead of durability or shelf life. Things like tomatoes and strawberries can ripen naturally. Pests are kept in check through ecological diversity as opposed to chemical intervention. Growing many different things eliminates the chance that a single pest wipes everything out. I have chosen to go heavy on compost and not rely much on the existing clay loam. Rich and friable soil makes everything easier from seeding to harvesting. This has led me to start making large amounts of compost which hold numerous other benefits. Aside from improved soil structure, compost is free of weed seeds as well as pathogenic viruses, bacteria, and fungi by way of its high temperature treatment process. A thick layer of finished compost is a better solution to diseases like blight than applying fungicides. Not to mention, its incredibly high nutrient and micro-nutrient content.</p>
-        <p>All of this means that the produce coming out of the garden should be superior in every way to what you’ll find at the supermarket.</p>
+        <p>Growing vegetables on a small scale and serving customers directly has great advantages. Because the product is not being shipped across the country, I can select varieties that focus on taste instead of durability or shelf life. Things like tomatoes and strawberries can ripen naturally. Pests are kept in check through ecological diversity as opposed to chemical intervention. Growing many different things eliminates the chance that a single pest wipes everything out. I have chosen to go heavy on compost and not rely much on the existing clay loam. Rich and friable soil makes everything easier from seeding to harvesting. This has led me to start making large amounts of compost which hold numerous other benefits like being free of weed seeds and pathogenic viruses, bacteria, and fungi by way of its high temperature treatment process. A thick layer of finished compost is a better solution to diseases like blight than applying fungicides. All of this means that the produce coming out of the garden should be superior in every way to what you’ll find at the supermarket.</p>
         <h4>Mission</h4>
         <p>The goal is to grow as much of the highest quality produce possible and to give members the best deal available. High quality produce to me means it’s high in nutrients, free of toxins, and great in taste. Visual appeal and customer experience is also important to me. You may find the occasional cabbage worm, but the produce should never be a dirty mess or riddled with bugs.</p>
         <p>Supermarket shopping can be a headache not having confidence in the products you buy. Were these strawberries sprayed with neurotoxins? Is it worth buying organic? ...hard to know. I’m glad to provide members with the peace of mind that the food you receive each week has no negative health risks attached.</p>
