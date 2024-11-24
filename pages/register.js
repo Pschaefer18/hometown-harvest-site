@@ -136,10 +136,10 @@ export default function register() {
             })
             .then(
               (response) => {
-                console.log('SUCCESS!', response.status, response.text);
+                // console.log('SUCCESS!', response.status, response.text);
               },
               (err) => {
-                console.log('FAILED...', err);
+                // console.log('FAILED...', err);
               },
             );
   }
@@ -150,10 +150,10 @@ export default function register() {
             })
             .then(
               (response) => {
-                console.log('SUCCESS!', response.status, response.text);
+                // console.log('SUCCESS!', response.status, response.text);
               },
               (err) => {
-                console.log('FAILED...', err);
+                // console.log('FAILED...', err);
               },
             );
   }
@@ -173,7 +173,7 @@ export default function register() {
       return totalRouteMeters
       }
   const handleAddressBlur = async(event) => {
-      console.log("blur")
+      // console.log("blur")
       if (address && city) {
         const waypoint = `${address}, ${city}`;
         try {
@@ -184,23 +184,24 @@ export default function register() {
             var admittedCalc = 0
             if (currentMemberAddresses.includes(waypoint.toLowerCase())) {
               omittedAddresses.splice(currentMemberAddresses.indexOf(waypoint.toLowerCase()), 1)
-              console.log("removed")
+              // console.log("removed")
             } else {
               admittedAddresses.push(waypoint)
-              console.log("added")
+              // console.log("added")
             }
             const omittedWaypoints = omittedAddresses.join('|')
             const admittedWaypoints = admittedAddresses.join('|')
-            console.log(omittedAddresses)
-            console.log(admittedAddresses)
+            // console.log(omittedAddresses)
+            // console.log(admittedAddresses)
             const omittedRouteLength = await GetOptimizedRouteLength(omittedWaypoints)
             const admittedRouteLength = await GetOptimizedRouteLength(admittedWaypoints)
+            console.log(admittedRouteLength, omittedRouteLength)
             const routeLengthDifference = admittedRouteLength - omittedRouteLength
             const homeDeliveryPrice = Math.round((500 + ((routeLengthDifference / 1609) * 0.5 + 3) * 24) / 5) * 5
             setDeliveryPrice(homeDeliveryPrice)
             } catch (error) {
                 setRecognizedAddress(false);
-                console.log(error)
+                // console.log(error)
             }
 
     }
