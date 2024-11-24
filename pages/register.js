@@ -77,7 +77,7 @@ export default function register() {
         if (recognizedAddress) {
           setFormCompletion("");
         } else {
-          setFormCompletion("Your address is outside of the delivery range, either move somewhere closer or pickup at the garden :)");
+          setFormCompletion("Sorry, we don't recognize this address");
         }
     } else {
       if (csaSelection) {
