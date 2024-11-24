@@ -64,17 +64,17 @@ export default function register() {
   const [address, setAddress] = useState("");
   const [city, setCity] = useState("");
   const [zipCode, setZipCode] = useState("");
-  const [recognizedAddress, setRecognizedAddress] = useState(null);
   const [deliveryPrice, setDeliveryPrice] = useState(null);
   const [formCompletion, setFormCompletion] = useState("please fill out all fields");
   const [isOpen, setIsOpen] = useState(Array(FAQs.length).fill(false));
+  var amount = 0;
   const router = useRouter();
 
   useEffect(() => {
     if (firstName && lastName && email && phone && address && city && zipCode) {
 
       if (csaSelection === "homeDelivery") {
-        if (recognizedAddress) {
+        if (deliveryPrice) {
           setFormCompletion("");
         } else {
           setFormCompletion("Sorry, we don't recognize this address");
@@ -90,7 +90,7 @@ export default function register() {
     else {
       setFormCompletion("please fill out all fields");
   }
-  }, [firstName, lastName, email, phone, address, city, zipCode, csaSelection, recognizedAddress]);
+  }, [firstName, lastName, email, phone, address, city, zipCode, csaSelection]);
   const addMember = async (e) => {
     e.preventDefault();
     const docRef = doc(db, "2025 Members", `${firstName} ${lastName}`)
@@ -116,7 +116,6 @@ export default function register() {
     setAddress("");
     setCity("");
     setZipCode("");
-    var amount = 0;
     if (csaSelection === "homeDelivery") {
         amount = deliveryPrice
     } else {
@@ -200,7 +199,7 @@ export default function register() {
             const homeDeliveryPrice = Math.round((500 + ((routeLengthDifference / 1609) * 0.5 + 3) * 24) / 5) * 5
             setDeliveryPrice(homeDeliveryPrice)
             } catch (error) {
-                setRecognizedAddress(false);
+                
                 // console.log(error)
             }
 
