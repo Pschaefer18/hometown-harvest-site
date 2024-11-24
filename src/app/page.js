@@ -77,7 +77,7 @@ export default function Home() {
         <Navbar aboutRef={aboutRef} csaProgramRef={csaProgramRef}/>
         <div class="homepage-title-container">
           <h1>Registration for the 2025 CSA is now open</h1>
-          <Link class="sign-up-link" href="/register">Click here to sign up</Link>
+          <a class="sign-up-link" href="/register">Click here to sign up </a>
         </div>
         <img class="homepage-image" src="/HH_Hompage_Image.png"/>
         <section>
