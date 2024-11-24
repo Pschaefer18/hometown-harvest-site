@@ -77,7 +77,7 @@ export default function register() {
         if (deliveryPrice) {
           setFormCompletion("");
         } else {
-          setFormCompletion("Sorry, we don't recognize this address");
+          setFormCompletion("Sorry, we don't recognize this address. Try altering it. e.g. 'dr' to 'drive' ");
         }
     } else {
       if (csaSelection) {
@@ -199,10 +199,13 @@ export default function register() {
             const homeDeliveryPrice = Math.round((500 + ((routeLengthDifference / 1609) * 0.5 + 3) * 24) / 5) * 5
             setDeliveryPrice(homeDeliveryPrice)
             } catch (error) {
-                
+                setDeliveryPrice(null)
                 // console.log(error)
             }
 
+    }
+    else {
+      setDeliveryPrice(null)
     }
   }
   const handleCsaSelectionChange = (event) => {
