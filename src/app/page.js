@@ -171,7 +171,7 @@ export default function Home() {
                   <ul>
                     <li>Spinach</li>
                     <li>Lettuce</li>
-                    <li>Bok Choi</li>
+                    <li>Bok Choy</li>
                     <li>Komatsuna</li>
                     <li>Tatsoi</li>
                     <li>Mizuna</li>
