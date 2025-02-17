@@ -189,11 +189,14 @@
   }
   .option {
     background-color: #f1f1f1;
-    border: 3px solid black;
+    border: 2px solid black;
     border-radius: 20px;
     text-align: center;
     margin: auto 60px 10px 60px;
     padding: 0 !important;
+  }
+  .option-title {
+    margin-top: 10px;
   }
   .option input[type="radio"] {
     display: none; /*Hide the radio button visually*/

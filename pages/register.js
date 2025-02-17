@@ -355,7 +355,7 @@ export default function register() {
           <div class="col option" style={csaSelection == "gardenPickup" ? {color: '#f1f1f1', backgroundColor: 'black'} : {color: 'black', backgroundColor: '#f1f1f1'}}>
             <input type="radio" id="gardenPickup" name="csaOption" value="gardenPickup" onChange={handleCsaSelectionChange}/>
             <label for="gardenPickup">
-                <h3>Garden Pickup</h3>
+                <h3 className="option-title">Garden Pickup</h3>
                 <Image class="image" src={csaSelection == "gardenPickup" ? "/man-carrying-package-gray.png" : "/man-carrying-package.png"} width="100" height="100"/>
                 <h6>About $21 Per Week</h6>
                 <h4>$500</h4>
