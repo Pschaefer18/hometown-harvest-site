@@ -2,7 +2,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCaretRight, faSleigh } from "@fortawesome/free-solid-svg-icons";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import React, { useState } from "react";
-import FAQs from "../../pages/FAQs";
+import FAQs from "../FAQs";
 import styles from "./faqs_component.module.css";
 
 
