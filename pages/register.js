@@ -6,56 +6,20 @@ import Head from "next/head";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {db} from "../src/app/firebase";
 import {collection, doc, setDoc, serverTimestamp} from 'firebase/firestore';
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, use } from "react";
 import { useRouter } from "next/router";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCaretRight, faSleigh } from "@fortawesome/free-solid-svg-icons";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import emailjs from '@emailjs/browser'
+import "../src/app/globals.css"
+import FaqsComponent from "@/app/faqs_component";
 
 export default function register() {
 
-  const FAQs = [
-    {
-      question: "What is a CSA?",
-      answer: `"CSA" stands for "Community Supported Agriculture". Today’s CSAs tend to be a subscription where the customer makes an up-front payment and receives a box of produce each week throughout the growing season (this one is no different).  The first CSAs took place in Japan in response to concern around chemicals used in farming. The new iteration we know today in North America took off in the 80s and, although similar, formed independently of the Japanese and is based on Rudolph Steiner's ideas from the 1920s.`
-    },
-    {
-      question: "What risk am I taking?",
-      answer: `As a CSA member, you are sharing risk, not unlike an investor. You should be aware of what those risks are and how they apply in our case. I’ve done my best to provide an overview of **link** and which ones I am concerned about.`,
-      link: {
-              href: "/Threats.pdf",
-              placeholder: "common threats to small growers"
-            }
-    },
-    {
-      question: "What is the history of the land?",
-      answer: "The land was conventionally farmed corn and soy until 2023 when it was planted in perennial hay. The clay loam is now compacted and low in organic matter. Because of this, I’ve decided to go HEAVY on compost to add nutrients, improve structure, and bring back the biology required for small scale vegetable production."
-    },
-    {
-      question: "Is it Organic?",
-      answer: "Obtaining Organic certification is a lengthy process and something for a later year. However, I won't be using any products or practices that are prohibited under Organic standards."
-    },
-    {
-      question: "What is the best way to contact you?",
-      answer: "If it's a timely or important matter regarding your share pickup or delivery, please call or text me at (734)-417-9715. Otherwise you can email hometownharvestllc@gmail.com, I just may not see it right away. If I don't respond to an important email, just call or text."
-    },
-    {
-      question: "What if I’m gone for a week and can’t pick up my share?",
-      answer: "If you know ahead of time that you'll be absent for a CSA pickup/delivery, please text me as soon as you can. As long as I'm aware before harvesting time, you'll be able to receive a double share the following week. This does not, however, carry over for a third week. If you fail to notify me, someone will eat your share and you won't be getting a double share."
-    },
-    {
-      question: "What if I forget to pick up my share?",
-      answer: "I understand that many of my members have chaotic lives and picking up a box of produce might not be of top priority. If you realize you forgot to pick up your share, it will be held for 24 hours, and you can pick it up the next morning. After that, someone will eat it. I don’t plan to keep track of who’s picked up and who hasn’t, so I won’t be able to notify you if you forget."
-    },
-    {
-      question: "Can I come visit?",
-      answer: "Yes, whether you’ve already signed up or are considering signing up, you are always welcome to come visit. Just be sure to message me (734-417-9715) in advance to set up a time."
-    }
-  ]
   const [CSAaboutIsExpanded, setCSAaboutIsExpanded] = useState(false);
-  const [CSAfaqIsExpanded, setCSAfaqIsExpanded] = useState(false);
   const [csaSelection, setCsaSelection] = useState("");
+  const [csaShareSize, setCsaShareSize] = useState("full");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -64,9 +28,10 @@ export default function register() {
   const [address, setAddress] = useState("");
   const [city, setCity] = useState("");
   const [zipCode, setZipCode] = useState("");
+  const [routeLengthDifference, setRouteLengthDifference] = useState(null);
   const [deliveryPrice, setDeliveryPrice] = useState(null);
+  const [pickupPrice, setPickupPrice] = useState(500);
   const [formCompletion, setFormCompletion] = useState("please fill out all fields");
-  const [isOpen, setIsOpen] = useState(Array(FAQs.length).fill(false));
   var amount = 0;
   const router = useRouter();
 
@@ -91,11 +56,17 @@ export default function register() {
       setFormCompletion("please fill out all fields");
   }
   }, [firstName, lastName, email, phone, address, city, zipCode, csaSelection]);
+  useEffect(() => {
+    if (routeLengthDifference !== null) {
+      setDeliveryPrice(Math.round((pickupPrice + ((routeLengthDifference / 1609) * 0.5 + 3) * ((csaShareSize === "full") ? 24 : 12)) / 5) * 5)
+    }
+  })
   const addMember = async (e) => {
     e.preventDefault();
     const docRef = doc(db, "2025 Members", `${firstName} ${lastName}`)
     await setDoc(docRef,{
       csaSelection: csaSelection,
+      csaShareSize: csaShareSize,
       firstName: firstName,
       lastName: lastName,
       email: email,
@@ -179,8 +150,6 @@ export default function register() {
             var currentMemberAddresses = ["4100 sunset ct, ann arbor", "2109 arlene st, ann arbor", "4730 whitman circle, ann arbor", "2277 gray fox court, ann arbor", "2525 blueberry lane, ann arbor", "4598 east loch alpine, ann arbor", "3676 huron court, ann arbor"]
             var omittedAddresses = ["4100 sunset ct, ann arbor", "2109 arlene st, ann arbor", "4730 whitman circle, ann arbor", "2277 gray fox court, ann arbor", "2525 blueberry lane, ann arbor", "4598 east loch alpine, ann arbor", "3676 huron court, ann arbor"]
             var admittedAddresses = ["4100 sunset ct, ann arbor", "2109 arlene st, ann arbor", "4730 whitman circle, ann arbor", "2277 gray fox court, ann arbor", "2525 blueberry lane, ann arbor", "4598 east loch alpine, ann arbor", "3676 huron court, ann arbor"]
-            var omittedCalc = 0
-            var admittedCalc = 0
             if (currentMemberAddresses.includes(waypoint.toLowerCase())) {
               omittedAddresses.splice(currentMemberAddresses.indexOf(waypoint.toLowerCase()), 1)
               // console.log("removed")
@@ -190,31 +159,26 @@ export default function register() {
             }
             const omittedWaypoints = omittedAddresses.join('|')
             const admittedWaypoints = admittedAddresses.join('|')
-            // console.log(omittedAddresses)
-            // console.log(admittedAddresses)
             const omittedRouteLength = await GetOptimizedRouteLength(omittedWaypoints)
             const admittedRouteLength = await GetOptimizedRouteLength(admittedWaypoints)
-            console.log(admittedRouteLength, omittedRouteLength)
-            const routeLengthDifference = admittedRouteLength - omittedRouteLength
-            const homeDeliveryPrice = Math.round((500 + ((routeLengthDifference / 1609) * 0.5 + 3) * 24) / 5) * 5
-            setDeliveryPrice(homeDeliveryPrice)
+            setRouteLengthDifference(admittedRouteLength - omittedRouteLength)
             } catch (error) {
+                setRouteLengthDifference(null)
                 setDeliveryPrice(null)
                 // console.log(error)
             }
-
     }
     else {
+      setRouteLengthDifference(null)
       setDeliveryPrice(null)
     }
   }
   const handleCsaSelectionChange = (event) => {
     setCsaSelection(event.target.value);
   }
-  const toggleFaq = (key) => {
-    var newArray = [...isOpen];
-    newArray[key] =!isOpen[key];
-    setIsOpen(newArray);
+  const handleCsaShareSizeChange = (event) => {
+    setCsaShareSize(event.target.value)
+    setPickupPrice(event.target.value === "half" ? 275 : 500)
   }
   return (
     <>
@@ -346,28 +310,51 @@ export default function register() {
               value={zipCode}
               aria-label="Zip code"
               onChange={e => setZipCode(e.target.value)}
+              />
+          </div>
+        </div>
+        <div className="share-size">
+          <h4>Share Configuration</h4>
+          <label for="full">
+          <input
+              type="radio"
+              name="shareSize"
+              value="full"
+              onChange={handleCsaShareSizeChange}
+              id="full"
+              checked={csaShareSize === "full"}
             />
-          </div>
-          </div>
-          <h4>Select An Option </h4>
-          <p>You may either pick up your weekly share at the garden (5185 Zeeb Rd) from 12 to 6PM on Saturdays or choose to have it delivered on Tuesdays around 4PM. Delivery rates vary based on your location.</p>
+            Full Share <i>-24 weeks</i>
+            </label>
+          <label>
+            <input
+              type="radio"
+              name="shareSize"
+              value="half"
+              onChange={handleCsaShareSizeChange}
+              id="full"
+            />
+            Half Share <i style={{color: "#434343"}}>-every other week for 24 weeks ($275)</i>
+          </label>
+        </div>
+          <p>You may either pick up your weekly share at the garden (5185 Zeeb Rd) from 12 to 6PM on Saturdays or choose to have it delivered on Tuesdays around 4PM. Delivery rates vary based on your location.</p>    
       <div class="row csa-options">
-          <div class="col option" style={csaSelection == "gardenPickup" ? {color: '#f1f1f1', backgroundColor: 'black'} : {color: 'black', backgroundColor: '#f1f1f1'}}>
+          <div class="col option" style={csaSelection == "gardenPickup" ? {color: 'black', border: "2px solid black", backgroundColor: '#d0d0d0'} : {color: 'gray', border: "2px solid gray"}}>
             <input type="radio" id="gardenPickup" name="csaOption" value="gardenPickup" onChange={handleCsaSelectionChange}/>
             <label for="gardenPickup">
                 <h3 className="option-title">Garden Pickup</h3>
-                <Image class="image" src={csaSelection == "gardenPickup" ? "/man-carrying-package-gray.png" : "/man-carrying-package.png"} width="100" height="100"/>
-                <h6>About $21 Per Week</h6>
-                <h4>$500</h4>
+                <Image class="image" src={csaSelection == "gardenPickup" ? "/man-carrying-package.png" : "/man-carrying-package-gray.png"} width="100" height="100"/>
+                <h6>About ${Math.round(pickupPrice / (csaShareSize == "half" ? 12:24))} Per Week</h6>
+                <h4>${csaShareSize == "half" ? 275:500}</h4>
             </label>
           </div>
           
-          <div class="col option" style={csaSelection == "homeDelivery" ? {color: '#f1f1f1', backgroundColor: 'black'} : {color: 'black', backgroundColor: '#f1f1f1'}}>
+          <div class="col option" style={csaSelection == "homeDelivery" ? {color: 'black', border: "2px solid black", backgroundColor: '#d0d0d0'} : {color: 'gray', border: "2px solid gray"}}>
             <input type="radio" id="homeDelivery" name="csaOption" value="homeDelivery" onChange={handleCsaSelectionChange}/>
             <label for="homeDelivery">
-                <h3>Home Delivery</h3>
-                <Image class="image" src={csaSelection == "homeDelivery" ? "/express-delivery-gray.png" : "/express-delivery.png"} width="100" height="100"/>
-                <h6>{deliveryPrice ? `About $${Math.round((deliveryPrice-500) / 24)} per week more` : "Enter Address to calculate price"}</h6>
+                <h3 className="option-title">Home Delivery</h3>
+                <Image class="image" src={csaSelection == "homeDelivery" ? "/express-delivery.png" : "/express-delivery-gray.png"} width="100" height="100"/>
+                <h6>{deliveryPrice ? `About $${Math.round((deliveryPrice-pickupPrice) / ((csaShareSize === "full" ? 24 : 12)))} per week more` : "Enter Address to calculate price"}</h6>
                 <h4>{deliveryPrice ? `$${deliveryPrice}`: '$ ???'}</h4>
             </label>
           </div>
@@ -387,52 +374,33 @@ export default function register() {
                 </label>
               </div> */}
       </div>
-          <button class="submit-btn" type="submit">Submit</button>
+          <button class="submit-btn btn btn-dark" disabled={formCompletion !== ""} type="submit">Submit</button>
         </form>
       <h4>Payment</h4>
       <div class="container">
         <div class="row">
           <div class="col-sm-6 payment-option">
-            <h5>Write a check</h5>
+            <h6>Write a check</h6>
             <ul>
-              <li>Make checks payable to "Paul Schaefer"</li>
-              <li>Mail to the following address or hand deliver to me:<br/>
+              <li>Make checks payable to "Hometown Harvest LLC"</li>
+              <li>Mail to the following address or hand deliver to Paul:<br/>
                 4161 Sunset Ct, Ann Arbor, MI 48103 </li>
               <li>Ensure you have sufficient account funds as checks will be cashed upon arrival</li>
             </ul>
           </div>
           <div class="col-sm-6 payment-option">
-            <h5>Pay with Venmo</h5>
+            <h6>Pay with Venmo</h6>
             <Image src="/MyVenmoQRCode.png" width="150" height="204" alt="venmo QR Code" />
             <p>Venmo Email: paul.r.schaefer11@gmail.com</p>
           </div>
         </div>
         <div class="payment-info">
-        Payments must be made before May 18th to secure your membership <br/>
-        Once your payment has been received, you'll be notified and your status as a member will be confirmed
+        Signing up alone does not confirm your membership. Only once your payment has been received is your status as a member confirmed. Spots are limited so be sure to pay as soon as you can to secure your membership!
         </div>
       </div>
       <h4 class="faq-title">Frequently Asked Questions</h4>
-      <div class="csa-faq">
-        <ul>
-          {FAQs.map((faq, key) => (
-            <li key={key}>
-              <div class="faq" onClick={() => toggleFaq(key)}><FontAwesomeIcon icon={isOpen[key] ? (faCaretDown):(faCaretRight)} width="20px" height="20px" class="icon"/><h5>{faq.question}</h5></div>
-              <p class={`faq-answer ${isOpen[key] ? "open" : ""}`}>
-                {faq.answer.split(' ').map((word, index) => (
-                  <span key={index}>
-                    {word ===  "**link**"? ( // Replace '**link**' with actual link
-                      <a href={faq.link.href}>
-                        {faq.link.placeholder}
-                      </a>
-                    ) : ( word )}
-                {' '} {/* Add a space after each word */}
-                  </span>
-    ))}
-  </p>
-            </li>
-          ))}
-        </ul>
+      <div class="faqsOnRegisterPage">
+        <FaqsComponent />
       </div>
       <div class="contact-info">
         <h4>Contact Information</h4>

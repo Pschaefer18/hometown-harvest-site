@@ -6,7 +6,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
   title: "Hometown Harvest CSA",
-  description: "25 week CSA program in Dexter, MI",
+  description: "24 week CSA program in Dexter, MI",
 };
 
 export default function RootLayout({ children }) {

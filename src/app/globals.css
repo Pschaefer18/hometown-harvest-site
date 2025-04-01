@@ -1,15 +1,29 @@
 .body {
   background-color: white;
-  max-width: 1440px;
+  max-width: 1050px;
   margin: auto;
+  margin-top: 30px;
   display: block;
+}
+.mobile {
+  display: none;
+}
+.desktop {
+  display: block;
+}
+a {
+  color: black;
+  text-decoration: underline;
+}
+a:hover {
+  cursor: pointer;
 }
 .homepage {
   text-align: center;
-  background-color: #f1f1f1;
+  background-color: #ffffff;
 }
 .homepage-image {
-  width: 85%;
+  width: 100%;
   height: auto;
   margin-bottom: 20px;
 }
@@ -21,17 +35,19 @@
   display: block;
   width: 100%;
   color: black;
-  font-size: 24px;
+  font-size: 20px;
   margin-bottom: 15px;
 }
 section {
-  padding: 20px 7.5%;
+  padding: 20px 2%;
 }
 .section-title {
   background-color: white;
   color: black;
   text-align: left;
+  text-transform: capitalize;
   margin-bottom: 30px;
+  margin-top: 30px;
   padding: 5px 10px;
   border: 3px solid black;
   border-radius: 5px;
@@ -44,6 +60,21 @@ section {
 .share-examples img {
   margin-bottom: 15px;
 }
+.shares {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+.share {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+.share span {
+  font-size: 16px;
+}
 .csa-definition {
   margin: auto;
   align-items: center;
@@ -53,147 +84,187 @@ section {
   max-width: 350px;
   margin: auto;
 }
-.csa-info {
+.csa-details {
   display: flex;
+  flex-direction: column;
   gap: 75px;
   text-align: left;
   margin-top: 30px;
 }
-.sign-up-button {
-  font-size: 24px;
-  padding: 10px 25px;
-  border: 2px solid black;
-  border-radius: 10px;
-  background-color: #e9e9e9;
-  color: black;
-  cursor: pointer;
+.csa-info div {
+  width: 30%;
+}
+.signup {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   margin-top: 30px;
 }
-.sign-up-button:hover {
-  background-color: black;
-  color: white;
+.signup-btn {
+  font-size: 24px !important;
+  align-self: center;
 }
-.what-i-grow-mobile {
+.what-we-grow-mobile {
   display: none;
 }
-.what-i-grow h3 {
+.what-we-grow h3 {
   margin-bottom: 30px;
 }
-.what-i-grow ul {
+.what-we-grow ul {
   list-style-type: none;
   padding: 0;
   white-space: nowrap;
 }
-.what-i-grow .col {
+.what-we-grow .col {
   text-align: left;
 }
+
 .about {
   text-align: left;
 }
 .about p {
   text-indent: 30px;
-  font-size: 14px;
+  font-size: 16px;
+}
+.about-content {
+  max-width: 800px;
+  margin: auto;
 }
 .contact-info {
   margin-top: 15px;
-}
-.contact-info .row {
   font-weight: bold;
   margin-left: 10px;
+  text-wrap: nowrap;
+  width: fit-content;
+  margin: auto;
 }
 .contact-info .value {
   font-weight: normal;
+  margin-left: 20px;
 }
-@media (max-width: 768px) {
-  .share-examples {
-    display: flex;
-    flex-direction: column;
+@media (max-width: 768px) { /* Adjusted for tablets and phones */
+  /* General Body Adjustments */
+  .body {
+    margin-top: 15px; /* Reduce top margin for smaller screens */
+    padding: 0 10px; /* Add slight padding to prevent edge-to-edge content */
   }
-  .share {
-    align-items: center;
-    display: flex;
-    flex-direction: column;
-  }
-  .csa-definition p{
-    margin-top: 25px;
-    margin-bottom: 25px;
-  }
-  .homepage-title-container h1{
-    font-size: larger;
-    max-width: 300px;
-    margin: auto;
-  }
-  .sign-up-link {
-    font-size: small;
-    margin-top: 10px;
-  }
-  .section-title {
-    margin: auto;
-    margin-bottom: 30px;
-  }
-  .csa-info {
-    flex-direction: column;
-  }
-  .what-i-grow-mobile {
+  .mobile {
     display: block;
   }
-  .what-i-grow {
+  .desktop {
     display: none;
   }
-  .what-i-grow-mobile h3 {
-    margin-bottom: 30px;
+  /* Homepage Title and Sign-Up Link */
+  .homepage-title-container h2 { /* Changed from h1 to h2 to match your JSX */
+    font-size: 1.5rem; /* Approx 24px, more manageable on mobile */
+    max-width: 90%; /* Allow some flexibility */
+    margin: 0 auto 10px; /* Center and reduce spacing */
   }
-  .what-i-grow-mobile ul {
-    list-style-type: none;
-    padding: 0;
-    white-space: nowrap;
-    font-size: 12px;
+  .sign-up-link {
+    font-size: 1rem; /* 16px, readable but not too small */
+    margin: 10px 0; /* Consistent spacing */
   }
-  .what-i-grow-mobile .col {
-    text-align: left;
+
+  /* Images */
+  .homepage-image {
+    width: 100%;
+    height: auto;
+    margin-bottom: 15px; /* Slightly reduce margin */
   }
-}
-@media screen and (max-width: 850px) {
-  .banner-subtitle {
-    font-size: small;
+  .share img {
+    width: 100%; /* Make images responsive */
+    max-width: 200px; /* Cap the size for smaller screens */
+    height: auto;
   }
-  .banner-title {
-    font-size: medium;
+
+  /* Section Titles */
+  .section-title {
+    font-size: 1.25rem; /* 20px, slightly smaller */
+    padding: 3px 8px; /* Reduce padding */
+    margin: 20px auto; /* Center and reduce spacing */
   }
-}
-.faq-title {
-  margin: 30px auto 25px auto;
-}
-.csa-faq {
-  text-align: left;
-}
-.csa-faq ul {
-  list-style-type: none;
-}
-.csa-faq li div {
-  display: inline-flex; /* Combine elements inline */
-  align-items: center; /* Align content vertically */
-}
-.csa-faq li div h5 {
-  margin-left: 10px;
-  margin-bottom: 0;
-}
-.csa-about h4 {
-  text-align: center;
-}
-.csa-faq h5 {
-  margin-bottom: 10px;
-}
-.faq:hover {
-  cursor: pointer;
-}
-.faq-answer {
-  max-height: 0px;
-  overflow: hidden;
-  transition: max-height 0.4s ease-out; /* Adjust duration and timing as desired */
+
+  /* CSA Program Section */
+  .shares {
+    gap: 20px; /* Add spacing between share examples */
+  }
+  .share span {
+    font-size: 0.9rem; /* 14px, smaller but readable */
+  }
+  .col-8 {
+    flex-direction: column; /* Stack details vertically */
+    gap: 20px; /* Reduce gap between items */
+    margin-top: 15px;
+  }
+  .csa-details h3 {
+    font-size: 1.1rem; /* 18px */
+  }
+  .csa-details p,
+  .csa-details ul {
+    font-size: 0.875rem; /* 14px */
+  }
+  .signup-btn {
+    font-size: 1.25rem !important; /* 20px, still tappable */
+    padding: 8px 16px; /* Increase tap area */
+  }
+
+  /* What We Grow Section */
+  .what-we-grow-mobile {
+    display: block; /* Already correct */
+  }
+  .what-we-grow {
+    display: none; /* Already correct */
+  }
+  .what-we-grow-mobile h3 {
+    font-size: 1.25rem; /* 20px */
+    margin-bottom: 20px;
+  }
+  .what-we-grow-mobile ul {
+    font-size: 0.85rem; /* 13px, slightly larger than your 12px */
+    padding-left: 10px; /* Add slight indent for readability */
+  }
+  .what-we-grow-mobile .col {
+    margin-bottom: 20px; /* Space out columns */
+  }
+
+  /* About Section */
+  .about-content p {
+    font-size: 0.875rem; /* 14px, larger than your 12px for readability */
+    text-indent: 20px; /* Slightly smaller indent */
+  }
+
+  /* Contact Info */
+  .contact-info {
+    font-size: 0.9rem; /* 14px */
+    text-align: left; /* Align left for better flow */
+    margin: 10px auto;
+  }
+  .contact-info .row {
+    display: flex;
+    flex-direction: column; /* Stack label and value */
+    margin-bottom: 10px;
+  }
+  .contact-info .col-2 {
+    margin-bottom: 5px; /* Space between label and value */
+  }
 }
 
-.faq-answer.open {
-  max-height: 350px;
-  transition: max-height 0.4s ease-in-out; /* Adjust duration and timing as desired */
+/* Additional Breakpoint for Very Small Screens (e.g., phones < 480px) */
+@media (max-width: 480px) {
+  .homepage-title-container h2 {
+    font-size: 1.25rem; /* 20px */
+  }
+  .sign-up-link {
+    font-size: 0.875rem; /* 14px */
+  }
+  .section-title {
+    font-size: 1rem; /* 16px */
+  }
+  .signup-btn {
+    font-size: 1rem !important; /* 16px */
+    padding: 6px 12px; /* Smaller but still tappable */
+  }
+  .what-we-grow-mobile ul {
+    font-size: 0.75rem; /* 12px */
+  }
 }

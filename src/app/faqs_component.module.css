@@ -1,0 +1,44 @@
+.csaFaq {
+    text-align: left;
+}
+.csaFaq ul {
+    list-style-type: none;
+    padding: 0;
+}
+.faq {
+    display: flex;
+    align-items: center;
+}
+.faq:hover {
+    cursor: pointer;
+}
+.faq h5, .faq h6 {
+    margin: 0px;
+    margin-left: 10px;
+    font-weight: 500;
+}
+.caret {
+    width: 20px;
+    height: 20px;
+}
+.faqAnswer {
+    margin: 10px 0px 10px 30px;
+}
+.closed {
+    max-height: 0;
+    overflow: hidden;
+    color: rgba(0, 0, 0, 0.0);
+    transition: color 0.5s ease, max-height 1s ease;
+    margin-left: 30px;
+  }
+  .open {
+    visibility: visible;
+    overflow: hidden;
+    max-height: 400px;
+    color: rgba(0, 0, 0, 1.0);
+    transition: color 0.5s ease, max-height 1s ease;
+  }
+
+@media (max-width: 768px) {
+    
+}

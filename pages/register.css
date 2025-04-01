@@ -114,7 +114,7 @@
   .body {
     margin: auto;
     padding: 10px 25px;
-    max-width: 800px;
+    max-width: 800px !important;
     background-color: white;
   }
   .banner {
@@ -124,7 +124,7 @@
   }
   .banner-img {
     margin: auto;
-    width: 22%;
+    width: 150px;
     height: auto;
   }
   .banner-text {
@@ -154,15 +154,15 @@
     margin-top: 5%;
     text-align: left;
   }
-  input[type="radio"] {
+  .csa-options input[type="radio"] {
     border: 1.5px solid black;
     color: black;
   }
-  input[type="radio"]:checked {
+  .csa-options input[type="radio"]:checked {
     background-color: black; /* Change background color on selection */
     border-color: black;
   }
-  .input[type="radio"] {
+  .csa-options .input[type="radio"] {
     border:0; 
     padding:10px; 
     font-size:1.3em; 
@@ -179,16 +179,45 @@
     border-radius: 3px;    
   }
 
-  input[type="radio"]:focus { 
+  .csa-options input[type="radio"]:focus { 
     outline: none !important;
     border-color: #000000;
     box-shadow: 0 0 10px #000000;
+  }
+  .share-size {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 25px;
+  }
+  .share-size input[type="radio"] {
+    appearance: none;
+    width: 16px; /* Adjust as needed */
+    height: 16px; /* Adjust as needed */
+    border: 2px solid #ccc;
+    border-radius: 50%; /* Make it a circle */
+    margin-bottom: 3px;
+    margin-right: 10px;
+    vertical-align: middle;
+  }
+  
+  .share-size input[type="radio"]:checked {
+    border-color: black;
+  }
+  
+  .share-size input[type="radio"]:checked::before {
+    content: "";
+    display: block;
+    width: 8px; /* Adjust size of inner circle */
+    height: 8px;
+    margin: 2px;
+    background-color: black;
+    border-radius: 50%;
   }
   .csa-options {
     margin-top: 30px !important;
   }
   .option {
-    background-color: #f1f1f1;
+    background-color: #ffffff;
     border: 2px solid black;
     border-radius: 20px;
     text-align: center;
@@ -215,16 +244,13 @@
     margin-bottom: 10px;
   }
   .option:hover {
-    background-color: #cfcfcf;
+    background-color: rgba(0, 0, 0, 0.1);
     cursor: pointer;
   }
   
   .about-title {
     text-align: center;
     position: relative;
-  }
-  .faq-title {
-    margin: 30px auto 25px auto;
   }
   .csa-about {
     display: flex;
@@ -246,36 +272,6 @@
   a:hover {
     font-weight: bold !important;
     font-size: 15.4px;
-  }
-  .csa-faq ul {
-    list-style-type: none;
-  }
-  .csa-faq li div {
-    display: inline-flex; /* Combine elements inline */
-    align-items: center; /* Align content vertically */
-  }
-  .csa-faq li div h5 {
-    margin-left: 10px;
-    margin-bottom: 0;
-  }
-  .csa-about h4 {
-    text-align: center;
-  }
-  .csa-faq h5 {
-    margin-bottom: 10px;
-  }
-  .faq:hover {
-    cursor: pointer;
-  }
-  .faq-answer {
-    max-height: 0px;
-    overflow: hidden;
-    transition: max-height 0.4s ease-out; /* Adjust duration and timing as desired */
-  }
-  
-  .faq-answer.open {
-    max-height: 350px;
-    transition: max-height 0.4s ease-in-out; /* Adjust duration and timing as desired */
   }
   .csa-about.expand{
     max-height: 5000px !important;
@@ -315,9 +311,6 @@
     padding: 1% 0;
     width: 97%;
     font-size: 20px;
-    border-radius: 5px;
-    color: white;
-    background-color: black;
   }
   .confirmation-page {
     text-align: center;
@@ -343,4 +336,16 @@
   .payment-info {
     font-weight: 400;
     font-style: italic;
+  }
+  h4 {
+    text-align: center;
+  }
+  form h4 {
+    text-align: left;
+  }
+  .csa-faq h4{
+    text-align: left;
+  }
+  .csa-options h4 {
+    text-align: center;
   }
