@@ -11,7 +11,7 @@ export default function confirmationPage() {
     return (
         <div class='body'>
             <h2>Your form has been submitted</h2>
-            <h3>Thank you for signing up!</h3>
+            <h4>Thank you for signing up!</h4>
             <p>Please send ${amount} to Paul Schaefer to confirm your membership</p>
       <div class="container">
         <div class="row">
@@ -31,8 +31,7 @@ export default function confirmationPage() {
           </div>
         </div>
         <div class="payment-info">
-        Payments must be made to secure your membership <br/>
-        Once your payment has been received, you'll get an email confirmation
+        Signing up alone does not confirm your membership. Only once your payment has been received is your status as a member confirmed. Spots are limited so be sure to pay as soon as you can to secure your membership!
         </div>
       </div>
       <h6>If you decide to cancel your membership</h6>

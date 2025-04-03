@@ -11,11 +11,12 @@
     top: 0px;
 }
 .nav-links {
+    display: block;
     position: relative;
     margin: auto;
     padding: 0;
   }
-.nav-links li{
+.nav-links li {
     position: relative;
     font-size: 20px;
     display: inline-block;
@@ -25,10 +26,70 @@
 .nav-links li:hover {
     cursor: pointer;
 }
+.mobile-menu-container {
+    display: none; /* Hidden by default on desktop */
+    cursor: pointer;
+  }
 @media (max-width: 768px) {
-    .nav-links {
-        display: none;
-    }
+    @media (max-width: 768px) {
+        .body {
+            margin-top: 0;
+        }
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            position: sticky;
+            z-index: 1000;
+        }
+        .mobile-menu-container {
+            display: block;
+            margin-right: 20px;
+            margin-bottom: 8px;
+        }
+      
+        .nav-links {
+          display: block; /* Hide the nav links by default on mobile */
+          flex-direction: column; /* Stack links vertically */
+          position: absolute;
+          top: 90px; /* Adjust based on navbar height */
+          left: 0;
+          right: 0;
+          background-color: #fff; /* Match navbar background */
+          box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+          padding: 20px;
+          text-align: center;
+          max-height: 0; /* Start with 0 height for transition */
+          overflow: hidden; /* Hide content during transition */
+          transition: max-height 0.3s ease, opacity 0.3s ease; /* Smooth transition */
+          opacity: 0; /* Start with 0 opacity */
+        }
+      
+        .nav-links.open {
+          display: flex; /* Show the nav links when open */
+          max-height: 300px; /* Adjust based on content height */
+          opacity: 1; /* Fully visible */
+          overflow: hidden;
+          transition: max-height 0.3s ease, opacity 0.3s ease; /* Smooth transition */
+        }
+      
+        .nav-links li {
+          margin: 10px 0; /* Space between links in mobile view */
+        }
+      }
+      
+      /* Desktop styles (ensure links are visible) */
+      @media (min-width: 769px) {
+        .nav-links {
+          display: flex !important; /* Always visible on desktop */
+          position: static;
+          background-color: transparent;
+          box-shadow: none;
+          padding: 0;
+          max-height: none; /* No height restriction on desktop */
+          opacity: 1; /* Always fully visible */
+        }
+      }
     .logo-container {
         margin-left: 15px;
         position: relative;
@@ -38,15 +99,11 @@
         position: relative;
         width: 85px
     }
-    .navbar {
-        display: flex;
-        justify-content: space-between;
-    }
     .menu-container {
         width: auto;
         margin-right: 15px;
     }
-    .menu {
+    .menu-icon {
         height: 50px;
     }
 }

@@ -57,7 +57,7 @@ const FAQs = [
     },
     {
       question: "What is the history of the land?",
-      answer: "This land was conventionally farmed corn and soy until 2023 when it was planted in perennial hay. Growing vegetables in a heavy clay loam with low organic matter would be miserable at best. Because of this, We’re going HEAVY on compost to add nutrients, improve structure, and bring back the biology required for small scale vegetable production.",
+      answer: "This land was conventionally farmed for corn and soy until 2023 when it was planted in perennial hay. Growing vegetables in a heavy clay loam with low organic matter would be miserable at best. Because of this, We’re going HEAVY on compost to add nutrients, improve structure, and bring back the biology required for small scale vegetable production.",
       id: 9
     },
     {

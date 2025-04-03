@@ -13,7 +13,8 @@ import { faCaretRight, faSleigh } from "@fortawesome/free-solid-svg-icons";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import emailjs from '@emailjs/browser'
 import "../src/app/globals.css"
-import FaqsComponent from "@/app/faqs_component";
+import FaqsComponent from "@/app/faqs_component"
+import FaqsComponentMobile from "@/app/faqs_component-mobile";
 
 export default function register() {
 
@@ -32,7 +33,7 @@ export default function register() {
   const [deliveryPrice, setDeliveryPrice] = useState(null);
   const [pickupPrice, setPickupPrice] = useState(500);
   const [formCompletion, setFormCompletion] = useState("please fill out all fields");
-  var amount = 0;
+  const [amountDue, setAmountDue] = useState(0);
   const router = useRouter();
 
   useEffect(() => {
@@ -61,6 +62,13 @@ export default function register() {
       setDeliveryPrice(Math.round((pickupPrice + ((routeLengthDifference / 1609) * 0.5 + 3) * ((csaShareSize === "full") ? 24 : 12)) / 5) * 5)
     }
   })
+  useEffect(() => {
+    if (csaSelection === "homeDelivery") {
+      setAmountDue(deliveryPrice)
+  } else {
+      setAmountDue(pickupPrice)
+  }
+  }, [csaSelection, deliveryPrice, pickupPrice])
   const addMember = async (e) => {
     e.preventDefault();
     const docRef = doc(db, "2025 Members", `${firstName} ${lastName}`)
@@ -76,7 +84,7 @@ export default function register() {
       city: city,
       zipCode: zipCode,
       time: serverTimestamp(),
-      deliveryPrice: deliveryPrice,
+      amountDue: amountDue,
       paymentReceived: false
     });
     setFirstName("");
@@ -87,21 +95,11 @@ export default function register() {
     setAddress("");
     setCity("");
     setZipCode("");
-    if (csaSelection === "homeDelivery") {
-        amount = deliveryPrice
-    } else {
-        amount = 500
-    }
-    router.push(`/register/confirmation-page?amount=${amount}`);
+    router.push(`/register/confirmation-page?amount=${amountDue}`);
   }
   const sendUserEmail = () => {
-    if (csaSelection === "homeDelivery") {
-      amount = deliveryPrice
-    } else {
-      amount = 500
-    }
     emailjs
-            .send('service_6fjtwym', 'template_jav91kj', {amount: `${amount}`, name: `${firstName}`, email: email}, {
+            .send('service_6fjtwym', 'template_jav91kj', {amount: `${amountDue}`, name: `${firstName}`, email: email}, {
               publicKey: 'YXPuuE9WWkJni1Uzb',
             })
             .then(
@@ -178,7 +176,7 @@ export default function register() {
   }
   const handleCsaShareSizeChange = (event) => {
     setCsaShareSize(event.target.value)
-    setPickupPrice(event.target.value === "half" ? 275 : 500)
+    setPickupPrice(event.target.value === "half" ? 300 : 500)
   }
   return (
     <>
@@ -334,7 +332,7 @@ export default function register() {
               onChange={handleCsaShareSizeChange}
               id="full"
             />
-            Half Share <i style={{color: "#434343"}}>-every other week for 24 weeks ($275)</i>
+            Half Share <i style={{color: "#434343"}}>-every other week for 24 weeks ($300)</i>
           </label>
         </div>
           <p>You may either pick up your weekly share at the garden (5185 Zeeb Rd) from 12 to 6PM on Saturdays or choose to have it delivered on Tuesdays around 4PM. Delivery rates vary based on your location.</p>    
@@ -345,7 +343,7 @@ export default function register() {
                 <h3 className="option-title">Garden Pickup</h3>
                 <Image class="image" src={csaSelection == "gardenPickup" ? "/man-carrying-package.png" : "/man-carrying-package-gray.png"} width="100" height="100"/>
                 <h6>About ${Math.round(pickupPrice / (csaShareSize == "half" ? 12:24))} Per Week</h6>
-                <h4>${csaShareSize == "half" ? 275:500}</h4>
+                <h4>${csaShareSize == "half" ? 300:500}</h4>
             </label>
           </div>
           
@@ -398,21 +396,30 @@ export default function register() {
         Signing up alone does not confirm your membership. Only once your payment has been received is your status as a member confirmed. Spots are limited so be sure to pay as soon as you can to secure your membership!
         </div>
       </div>
-      <h4 class="faq-title">Frequently Asked Questions</h4>
+      <h4 class="faq-title desktop">Frequently Asked Questions</h4>
       <div class="faqsOnRegisterPage">
-        <FaqsComponent />
-      </div>
+        <div class="desktop">
+            <FaqsComponent/>
+          </div>
+          <div class="mobile">
+            <FaqsComponentMobile/>
+          </div>
+        </div>
       <div class="contact-info">
         <h4>Contact Information</h4>
         <div class="row">
-          Email:
-          <div class="value col-md-4 col-sm-6 col-xs-10">
+          <div class="col">
+            Email:
+          </div>
+          <div class="value col">
             <a href="mailto:hometownharvestllc@gmail.com">hometownharvestllc@gmail.com</a>
           </div>
         </div>
         <div class="row">
-          Phone:
-          <div class="value col-md-4 col-sm-6 col-xs-10">
+          <div class="col">
+            Phone:
+          </div>
+          <div class="value col">
             (734) 417-9715
           </div>
         </div>

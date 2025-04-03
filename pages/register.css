@@ -85,31 +85,10 @@
     color: inherit;
     text-decoration: none;
   }
-  
-  @media (prefers-color-scheme: dark) {
-    html {
-      color-scheme: dark;
-    }
-  }
-  @media screen and (max-width: 480px) {
-    p {
-      font-size: 12px;
-    }
-    .form-check {
-      font-size: 12px;
-    }
-  }
-  @media screen and (max-width: 850px) {
-    p {
-      font-size: 14px;
-    }
-    .banner-subtitle {
-      font-size: small;
-    }
-    .banner-title {
-      font-size: medium;
-      margin-bottom: 0;
-    }
+  .banner-img {
+    margin: auto;
+    width: 150px;
+    height: auto;
   }
   .body {
     margin: auto;
@@ -121,11 +100,6 @@
     text-align: center;
     margin: auto;
     display: flex;
-  }
-  .banner-img {
-    margin: auto;
-    width: 150px;
-    height: auto;
   }
   .banner-text {
     position: relative;
@@ -139,7 +113,6 @@
     width: 100%;
     color: Black;
     text-align: center;
-
   }
   .h6 {
     margin: auto;
@@ -322,6 +295,7 @@
   .contact-info .row {
     font-weight: bold;
     margin-left: 10px;
+    flex-direction: row;
   }
   .contact-info .value {
     font-weight: normal;
@@ -336,6 +310,7 @@
   .payment-info {
     font-weight: 400;
     font-style: italic;
+    margin-bottom: 25px;
   }
   h4 {
     text-align: center;
@@ -348,4 +323,43 @@
   }
   .csa-options h4 {
     text-align: center;
+  }
+  @media (prefers-color-scheme: dark) {
+    html {
+      color-scheme: dark;
+    }
+  }
+  @media screen and (max-width: 480px) {
+    p {
+      font-size: 12px;
+    }
+    .form-check {
+      font-size: 12px;
+    }
+  }
+  @media screen and (max-width: 850px) {
+    p {
+      font-size: 14px;
+    }
+    .banner-subtitle {
+      font-size: small;
+    }
+    .banner-title {
+      font-size: medium;
+      margin-bottom: 0;
+    }
+    .banner-img {
+      margin: auto;
+      width: 100px;
+      height: auto;
+    }
+    .option {
+      margin-left: 10px;
+      margin-right: 10px;
+      max-width: 50%;
+    }
+    .share-size label {
+      font-size: 3.5vw;
+      margin-top: 10px;
+    }
   }
