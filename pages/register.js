@@ -253,7 +253,7 @@ export default function register() {
             type="secondEmail"
             class="form-control"
             name="secondEmail"
-            placeholder="Second email for newsletter (optional)"
+            placeholder="Add second email to newsletter (optional)"
             value={secondEmail}
             aria-label="extra-email"
             onChange={e => setSecondEmail(e.target.value)}

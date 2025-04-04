@@ -12,14 +12,14 @@ export default function confirmationPage() {
         <div class='body'>
             <h2>Your form has been submitted</h2>
             <h4>Thank you for signing up!</h4>
-            <p>Please send ${amount} to Paul Schaefer to confirm your membership</p>
+            <p>Please send ${amount} to confirm your membership</p>
       <div class="container">
         <div class="row">
           <div class="col-sm-6 payment-option">
             <h5>Write a check</h5>
             <ul>
-              <li>Make checks payable to "Paul Schaefer"</li>
-              <li>Mail to the following address or hand deliver to me:<br/>
+              <li>Make checks payable to "Hometown Harvest LLC"</li>
+              <li>Mail to the following address or hand deliver to Paul:<br/>
                 4161 Sunset Ct, Ann Arbor, MI 48103 </li>
               <li>Ensure you have sufficient account funds as checks will be cashed upon arrival</li>
             </ul>
