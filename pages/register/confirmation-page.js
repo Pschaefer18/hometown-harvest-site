@@ -12,7 +12,7 @@ export default function confirmationPage() {
         <div class='body'>
             <h2>Your form has been submitted</h2>
             <h4>Thank you for signing up!</h4>
-            <p>Please send ${amount} to confirm your membership</p>
+            <p>Please make payment of ${amount} to confirm your membership</p>
       <div class="container">
         <div class="row">
           <div class="col-sm-6 payment-option">
