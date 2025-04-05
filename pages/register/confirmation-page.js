@@ -35,7 +35,7 @@ export default function confirmationPage() {
         </div>
       </div>
       <h6>If you decide to cancel your membership</h6>
-      <p>please email hometownharvestllc@gmail.com</p>
+      <p>please email paul@hometownharvestllc.com</p>
     </div>
     )
 }

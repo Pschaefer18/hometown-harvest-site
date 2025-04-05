@@ -391,7 +391,7 @@ export default function Home() {
             Email:
             </div>
             <div class="col-2 value">
-              <a href="mailto:hometownharvestllc@gmail.com">hometownharvestllc@gmail.com</a>
+              <a href="mailto:paul@hometownharvestllc.com">paul@hometownharvestllc.com</a>
             </div>
           </div>
           <div class="row">

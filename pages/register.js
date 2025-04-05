@@ -412,7 +412,7 @@ export default function register() {
             Email:
           </div>
           <div class="value col">
-            <a href="mailto:hometownharvestllc@gmail.com">hometownharvestllc@gmail.com</a>
+            <a href="mailto:paul@hometownharvestllc.com">paul@hometownharvestllc.com</a>
           </div>
         </div>
         <div class="row">

@@ -62,7 +62,7 @@ const FAQs = [
     },
     {
       question: "What is the best way to contact you?",
-      answer: "If it's a timely or important matter regarding your share pickup or delivery, please call or text Paul at (734)-417-9715. Otherwise you can email hometownharvestllc@gmail.com, we just may not see it right away. If we don't respond to an important email, just call or text.",
+      answer: "If it's a timely or important matter regarding your share pickup or delivery, please call or text Paul at (734)-417-9715. Otherwise you can email paul@hometownharvestllc.com, we just may not see it right away. If we don't respond to an important email, just call or text.",
       id: 10
     },
     {
