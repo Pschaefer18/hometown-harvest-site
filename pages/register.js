@@ -99,7 +99,7 @@ export default function register() {
   }
   const sendUserEmail = () => {
     emailjs
-            .send('service_6fjtwym', 'template_jav91kj', {amount: `${amountDue}`, name: `${firstName}`, email: email}, {
+            .send('service_v55fj6r', 'template_jav91kj', {amount: `${amountDue}`, name: `${firstName}`, email: email}, {
               publicKey: 'YXPuuE9WWkJni1Uzb',
             })
             .then(
@@ -113,7 +113,7 @@ export default function register() {
   }
   const addedToNewsletterConfirmation = () => {
     emailjs
-            .send('service_6fjtwym', 'template_oij7onh', {name: `${firstName} ${lastName}`, email: secondEmail}, {
+            .send('service_v55fj6r', 'template_oij7onh', {name: `${firstName} ${lastName}`, email: secondEmail}, {
               publicKey: 'YXPuuE9WWkJni1Uzb',
             })
             .then(
