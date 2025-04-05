@@ -31,7 +31,7 @@ const FAQs = [
     },
     {
       question: "What if I forget to pick up my share?",
-      answer: "We understand that many of our members have chaotic lives and picking up a box of produce might not be of top priority. If you realize you forgot to pick up your share, it will be held for 24 hours, and you can pick it up the next morning. After that, someone will eat it. We don’t keep track of who’s picked up and who hasn’t, so we can’t notify you if you forget.",
+      answer: "We understand that many of our members have chaotic lives and picking up a box of produce might not be of first priority. If you realize you forgot to pick up your share, it will be held for 24 hours, and you can pick it up the next morning. After that, someone will eat it. We don’t keep track of who’s picked up and who hasn’t, so we can’t notify you if you forget.",
       category: "CSA",
       id: 5
     },
