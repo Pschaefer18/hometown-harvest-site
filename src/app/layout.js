@@ -16,7 +16,7 @@ export const metadata = {
         url: "/Users/paulschaefer/Documents/hometown-harvest-site/public/Hometown Harvest Logo.png", // Absolute URL to image
         width: 1200,
         height: 630,
-        alt: "My App Preview",
+        alt: "logo",
       },
     ],
   },
