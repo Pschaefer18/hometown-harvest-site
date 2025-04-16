@@ -52,7 +52,7 @@ export default function Home() {
             <div class="col-12 csa-details">
                 <div class="What-to-expect">
                   <h3>What to expect</h3>
-                  <p>Each week you'll get a box of freshly harvested produce consisting of a base share plus a few choice items E.g. Broccoli or Cauliflower, Lettuce or spinach, Kale or Kohlrabi. All the produce is harvested either the day before or morning of.</p>
+                  <p>Each week you'll get a box of freshly harvested produce consisting of a base share plus a few choice items E.g. Broccoli or cauliflower, lettuce or spinach, kale or kohlrabi. All the produce is harvested either the day before or morning of.</p>
                   <ul>
                     <li><b>Full Share - $500</b></li>
                     <li>Beginning the first week of June and ending mid-November</li>

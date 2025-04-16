@@ -13,7 +13,7 @@ const FAQs = [
     },
     {
       question: "I want to join, but I don't think we'll use that much produce. Can I split a share with someone?",
-      answer: "Yes, we're offering a half share for the 2025 CSA. Starting at $275, you'll pick up or receive a box every other week. You can choose this option when signing up",
+      answer: "Yes, we're offering a half share for the 2025 CSA. Starting at $300, you'll pick up or receive a box every other week. You can choose this option when signing up",
       category: "CSA",
       id: 2
     },
