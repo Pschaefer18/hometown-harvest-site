@@ -28,6 +28,7 @@ export default function confirmationPage() {
             <h5>Pay with Venmo</h5>
             <img src="/MyVenmoQRCode.png" width="150" height="204" alt="venmo QR Code" />
             <p>Venmo Email: paul.r.schaefer11@gmail.com</p>
+            <p>Phone: (734) 417-9715</p>
           </div>
         </div>
         <div class="payment-info">

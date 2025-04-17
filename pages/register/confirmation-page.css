@@ -12,6 +12,9 @@ h4 {
 .payment-option {
     text-align: center;
 }
+.payment-option p {
+  text-align: left;
+}
 .payment-option ul {
   text-align: left;
   list-style-type: '- ';
