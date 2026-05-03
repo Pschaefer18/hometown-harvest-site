@@ -240,7 +240,7 @@ export default function Home() {
               <h5>Other</h5>
                 <ul>
                   <li>Sweet Corn</li>
-                  <li>Rhubarb</li>
+                  {/* <li>Rhubarb</li> */}
                   <li>Strawberries</li>
                 </ul>
             </div>
