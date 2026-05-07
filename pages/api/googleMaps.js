@@ -3,7 +3,7 @@ import axios from "axios";
 export default async function handler(req, res) {
     const { waypoints } = req.query;
     const destination = "5185 Zeeb Rd";
-    const apiKey = 'AIzaSyD6ueocweqM-JNGouFl-nIE5AFNZBN7png';
+    const apiKey = process.env.GOOGLE_MAPS_API_KEY;
     const origin = "5185 Zeeb Rd Dexter";
     const url = `https://maps.googleapis.com/maps/api/directions/json?origin=${origin}&destination=${destination}&waypoints=optimize:true|${waypoints}&key=${apiKey}`;
     try {

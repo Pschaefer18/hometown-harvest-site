@@ -33,7 +33,7 @@ export default function Home() {
       <div class="body">
         <Navbar aboutRef={aboutRef} csaProgramRef={csaProgramRef} whatWeGrowRef={whatWeGrowRef} faqsRef={faqsRef}/>
         <div class="homepage-title-container">
-          <h2 style={{lineHeight: "2rem"}}>Registration for the 2025 CSA is now open</h2>
+          <h2 style={{lineHeight: "2rem"}}>Registration for the 2026 CSA is now open</h2>
           <a class="sign-up-link" href="/register">Click here to sign up </a>
         </div>
         <img class="homepage-image" src="/HH_Hompage_Image.png"/>
@@ -122,7 +122,7 @@ export default function Home() {
       <section ref={whatWeGrowRef}>
         <div class="what-we-grow">
         <h2 class="section-title">What We Grow</h2>
-          <h3 style={{marginTop:"30px"}}>2025 Growing Season</h3>
+          <h3 style={{marginTop:"30px"}}>2026 Growing Season</h3>
           <div class="row">
             <div class="col">
               <div class="row">
@@ -248,7 +248,7 @@ export default function Home() {
         </div>
         <div class="what-we-grow-mobile">
         <h2 class="section-title">What We Grow</h2>
-        <h5 style={{margin:"15px auto 30px auto"}}>2025 Growing Season</h5>
+        <h5 style={{margin:"15px auto 30px auto"}}>2026 Growing Season</h5>
           <div class="row" style={{textAlign: "left"}}>
             <div class="col-4">
               <h6>Alliums</h6>
