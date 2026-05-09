@@ -163,7 +163,7 @@ export default function register() {
             } catch (error) {
                 setRouteLengthDifference(null)
                 setDeliveryPrice(null)
-                // console.log(error)
+                console.log(error)
             }
     }
     else {
