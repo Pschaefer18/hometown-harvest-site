@@ -173,6 +173,12 @@ export default function register() {
       setDeliveryPrice(null)
     }
   }
+  const formatPhone = (value) => {
+    const digits = value.replace(/\D/g, '').slice(0, 10);
+    if (digits.length <= 3) return digits.length ? `(${digits}` : '';
+    if (digits.length <= 6) return `(${digits.slice(0, 3)}) ${digits.slice(3)}`;
+    return `(${digits.slice(0, 3)}) ${digits.slice(3, 6)}-${digits.slice(6)}`;
+  };
   const handleCsaSelectionChange = (event) => {
     setCsaSelection(event.target.value);
   }
@@ -272,7 +278,7 @@ export default function register() {
               placeholder="Phone"
               value = {phone}
               aria-label="phone"
-              onChange={e => setPhone(e.target.value)}
+              onChange={e => setPhone(formatPhone(e.target.value))}
             />
           </div>
       </div>
