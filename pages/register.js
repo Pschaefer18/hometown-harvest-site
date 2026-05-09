@@ -32,6 +32,7 @@ export default function register() {
   const [routeLengthDifference, setRouteLengthDifference] = useState(null);
   const [deliveryPrice, setDeliveryPrice] = useState(null);
   const [pickupPrice, setPickupPrice] = useState(500);
+  const [returningMember, setReturningMember] = useState(false);
   const [formCompletion, setFormCompletion] = useState("please fill out all fields");
   const [amountDue, setAmountDue] = useState(0);
   const router = useRouter();
@@ -71,7 +72,7 @@ export default function register() {
   }, [csaSelection, deliveryPrice, pickupPrice])
   const addMember = async (e) => {
     e.preventDefault();
-    const docRef = doc(db, "2025 Members", `${firstName} ${lastName}`)
+    const docRef = doc(db, "2026 Members", `${firstName} ${lastName}`)
     await setDoc(docRef,{
       csaSelection: csaSelection,
       csaShareSize: csaShareSize,
@@ -85,6 +86,7 @@ export default function register() {
       zipCode: zipCode,
       time: serverTimestamp(),
       amountDue: amountDue,
+      returningMember: returningMember,
       paymentReceived: false
     });
     setFirstName("");
@@ -174,14 +176,17 @@ export default function register() {
   const handleCsaSelectionChange = (event) => {
     setCsaSelection(event.target.value);
   }
+  useEffect(() => {
+    const base = csaShareSize === "half" ? 300 : 500;
+    setPickupPrice(returningMember ? Math.round(base * 0.67 / 5) * 5 : base);
+  }, [returningMember, csaShareSize]);
   const handleCsaShareSizeChange = (event) => {
     setCsaShareSize(event.target.value)
-    setPickupPrice(event.target.value === "half" ? 300 : 500)
   }
   return (
     <>
     <Head>
-      <title>2025 CSA Registration</title>
+      <title>2026 CSA Registration</title>
       <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
@@ -192,7 +197,7 @@ export default function register() {
       <Image class="banner-img" src="/Hometown Harvest Logo (transparent background).png" width="2000" height="2000" alt="logo"/>
       <div class="banner-text">
         <div class="banner-titles">
-          <h1 class="banner-title">2025 CSA Registration</h1>
+          <h1 class="banner-title">2026 CSA Registration</h1>
           <h7 class="banner-subtitle">Form is to be completed and submitted online only</h7>
         </div>
         
@@ -335,7 +340,19 @@ export default function register() {
             Half Share <i style={{color: "#434343"}}>-every other week for 24 weeks ($300)</i>
           </label>
         </div>
-          <p>You may either pick up your weekly share at the garden (5185 Zeeb Rd) from 12 to 6PM on Saturdays or choose to have it delivered on Tuesdays around 4PM. Delivery rates vary based on your location.</p>    
+        <div className="form-check" style={{marginBottom: "15px"}}>
+          <input
+            type="checkbox"
+            className="form-check-input"
+            id="returningMember"
+            checked={returningMember}
+            onChange={e => setReturningMember(e.target.checked)}
+          />
+          <label className="form-check-label" htmlFor="returningMember">
+            I am a returning member from 2025<i style={{color: "#434343"}}>(-33% discount applied to price)</i>
+          </label>
+        </div>
+          <p>Select an option to pick up your weekly share at the garden (5185 Zeeb Rd) from 12 to 6PM on Saturdays or choose to have it delivered on Tuesdays around 4PM. Delivery rates vary based on your location.</p>    
       <div class="row csa-options">
           <div class="col option" style={csaSelection == "gardenPickup" ? {color: 'black', border: "2px solid black", backgroundColor: '#d0d0d0'} : {color: 'gray', border: "2px solid gray"}}>
             <input type="radio" id="gardenPickup" name="csaOption" value="gardenPickup" onChange={handleCsaSelectionChange}/>
@@ -343,7 +360,10 @@ export default function register() {
                 <h3 className="option-title">Garden Pickup</h3>
                 <Image class="image" src={csaSelection == "gardenPickup" ? "/man-carrying-package.png" : "/man-carrying-package-gray.png"} width="100" height="100"/>
                 <h6>About ${Math.round(pickupPrice / (csaShareSize == "half" ? 12:24))} Per Week</h6>
-                <h4>${csaShareSize == "half" ? 300:500}</h4>
+                <h4>
+                  {returningMember && <s style={{color: "gray", marginRight: "6px"}}>${csaShareSize === "half" ? 300 : 500}</s>}
+                  <span style={returningMember ? {color: "red"} : {}}>${pickupPrice}</span>
+                </h4>
             </label>
           </div>
           
@@ -353,7 +373,10 @@ export default function register() {
                 <h3 className="option-title">Home Delivery</h3>
                 <Image class="image" src={csaSelection == "homeDelivery" ? "/express-delivery.png" : "/express-delivery-gray.png"} width="100" height="100"/>
                 <h6>{deliveryPrice ? `About $${Math.round((deliveryPrice-pickupPrice) / ((csaShareSize === "full" ? 24 : 12)))} per week more` : "Enter Address to calculate price"}</h6>
-                <h4>{deliveryPrice ? `$${deliveryPrice}`: '$ ???'}</h4>
+                <h4>
+                  {returningMember && deliveryPrice && <s style={{color: "gray", marginRight: "6px"}}>${Math.round(((csaShareSize === "half" ? 300 : 500) + ((routeLengthDifference / 1609) * 0.5 + 3) * (csaShareSize === "full" ? 24 : 12)) / 5) * 5}</s>}
+                  {deliveryPrice ? <span style={returningMember ? {color: "red"} : {}}>${deliveryPrice}</span> : '$ ???'}
+                </h4>
             </label>
           </div>
           
