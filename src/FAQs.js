@@ -13,13 +13,13 @@ const FAQs = [
     },
     {
       question: "I want to join, but I don't think we'll use that much produce. Can I split a share with someone?",
-      answer: "Yes, we're offering a half share for the 2025 CSA. Starting at $300, you'll pick up or receive a box every other week. You can choose this option when signing up",
+      answer: "Yes, we offer a half share starting at $300. You'll pick up or receive a box every other week. You can choose this option when signing up",
       category: "CSA",
       id: 2
     },
     {
       question: "Do you offer seasonal shares? Spring, Summer, Fall?",
-      answer: "While we don't offer seasonal shares at the moment, we have a half share option which is every other week. We may add seasonal shares in the future if there's interest.",
+      answer: "While we don't offer seasonal shares at the moment, we have a half share option which is every other week. We may add seasonal shares in the future if there's interest in that.",
       category: "CSA",
       id: 3
     },
@@ -47,7 +47,7 @@ const FAQs = [
     },
     {
       question: "Do you have a shop or a way to purchase produce items individually?",
-      answer: "Right now (Spring 2025) there is just the CSA Program. That said, we plan to offer produce for purchase at the Whitney Farmstead on a regular basis for the 2025 season, but the CSA is top priority.",
+      answer: "Right now (Spring 2026) there is just the CSA Program. That said, we plan to offer produce for purchase at the Whitney Farmstead on a regular basis for the 2026 season, but the CSA is top priority.",
       id: 7
     },
     {
