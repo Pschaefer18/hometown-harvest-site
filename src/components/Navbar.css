@@ -26,6 +26,16 @@
 .nav-links li:hover {
     cursor: pointer;
 }
+.nav-order-link {
+    color: white !important;
+    background-color: black;
+    text-decoration: none !important;
+    padding: 4px 14px;
+    border-radius: 6px;
+}
+.nav-order-link:hover {
+    background-color: #333;
+}
 .mobile-menu-container {
     display: none; /* Hidden by default on desktop */
     cursor: pointer;

@@ -108,6 +108,12 @@ section {
   font-size: 24px !important;
   align-self: center;
 }
+/* Faded look when CSA sign-ups are closed (button has the `disabled` attribute) */
+.signup-btn:disabled {
+  opacity: 0.3 !important;
+  cursor: not-allowed;
+  pointer-events: auto; /* so the "not allowed" cursor shows; clicks still do nothing */
+}
 .what-we-grow-mobile {
   display: none;
 }

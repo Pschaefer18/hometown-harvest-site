@@ -47,6 +47,7 @@ const Navbar = ({ aboutRef, csaProgramRef, whatWeGrowRef, faqsRef }) => {
         <li onClick={handleScrollToWhatWeGrow}>What We Grow</li>
         <li onClick={handleScrollToFAQs}>FAQs</li>
         <li onClick={handleScrollToAbout}>About</li>
+        <li><a href="/order" className="nav-order-link">Place an Order</a></li>
       </ul>
     </nav>
   );

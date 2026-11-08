@@ -33,8 +33,9 @@ export default function Home() {
       <div class="body">
         <Navbar aboutRef={aboutRef} csaProgramRef={csaProgramRef} whatWeGrowRef={whatWeGrowRef} faqsRef={faqsRef}/>
         <div class="homepage-title-container">
-          <h2 style={{lineHeight: "2rem"}}>Registration for the 2026 CSA is now open</h2>
-          <a class="sign-up-link" href="/register">Click here to sign up </a>
+          <h3 style={{lineHeight: "2rem"}}>Registration for the CSA Program is currently closed</h3>
+          {/* <h5 style={{lineHeight: "2rem"}}>24 weeks beginning first week in June</h5> */}
+          {/* <a class="sign-up-link" href="/register">Click here to sign up </a> */}
         </div>
         <img class="homepage-image" src="/HH_Hompage_Image.png"/>
         <section ref={csaProgramRef}>
@@ -69,7 +70,7 @@ export default function Home() {
                   </p>
                 </div>
                 <div class="signup">
-                  <button class="signup-btn btn btn-dark" onClick={() => window.location.href = "/register"}>Sign Up Today</button>
+                  <button class="signup-btn btn btn-dark" disabled>Sign Up Today</button>
                 </div>
               </div>
           </div>
@@ -112,7 +113,7 @@ export default function Home() {
                 </p>
               </div>
               <div class="signup">
-                <button class="signup-btn btn btn-dark" onClick={() => window.location.href = "/register"}>Sign Up Today</button>
+                <button class="signup-btn btn btn-dark" disabled>Sign Up Today</button>
               </div>
             </div>
           </div>
