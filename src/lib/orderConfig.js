@@ -17,7 +17,9 @@ export const RADISH_SIZES = [
   { id: "10lb", label: "10 lb", pounds: 10, price: 15 },
   { id: "25lb", label: "25 lb", pounds: 25, price: 30},
 ];
-
+export const GARLIC_SIZES = [
+  { id: "head", label: "head", price: 1.5 },
+]
 // Products for sale.
 // - `image`: drop a photo into /public/products/ using this file name.
 //   Until the file exists, a "photo coming soon" placeholder is shown.
@@ -103,6 +105,16 @@ export const PRODUCTS = [
     image: "/products/turnips-purple-top.jpeg",
     available: true,
     sizes: RADISH_SIZES,
+  },
+  {
+    id: "garlic",
+    name: "garlic (hardneck)",
+    tagline: "bold flavor",
+    description:
+    "german extra hardy variety great for storage",
+    image: "/products/garlic.jpeg",
+    available: true,
+    sizes: GARLIC_SIZES,
   },
 ];
 
