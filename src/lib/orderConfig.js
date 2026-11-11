@@ -5,8 +5,16 @@
 // API read from here, so customers can never change prices on their end.
 // ─────────────────────────────────────────────────────────────────────────────
 
-// Bulk sizes offered for every product unless a product overrides `sizes`.
-// `price` is in whole US dollars.
+// Units products can be sold and tracked in. A product's `unit` (default "lb")
+// decides how sizes are labeled and which Inventory field tracks its stock.
+export const UNITS = {
+  lb: { singular: "lb", plural: "lb", inventoryField: "poundsAvailable" },
+  head: { singular: "head", plural: "heads", inventoryField: "headsAvailable" },
+};
+
+// Size lists. `price` is in US dollars (cents are fine, e.g. 1.5).
+// For pound products, `pounds` is how many pounds that size takes from stock.
+// For other units, `amount` is how many units (e.g. heads) that size takes.
 export const DEFAULT_SIZES = [
   { id: "5lb", label: "5 lb", pounds: 5, price: 15 },
   { id: "10lb", label: "10 lb", pounds: 10, price: 28 },
@@ -18,8 +26,8 @@ export const RADISH_SIZES = [
   { id: "25lb", label: "25 lb", pounds: 25, price: 30},
 ];
 export const GARLIC_SIZES = [
-  { id: "head", label: "head", price: 1.5 },
-]
+  { id: "head", label: "Per head", amount: 1, price: 1.5 },
+];
 // Products for sale.
 // - `image`: drop a photo into /public/products/ using this file name.
 //   Until the file exists, a "photo coming soon" placeholder is shown.
@@ -114,6 +122,8 @@ export const PRODUCTS = [
     "german extra hardy variety great for storage",
     image: "/products/garlic.jpeg",
     available: true,
+    unit: "head",
+    maxPerOrder: 30, // heads per order (default is MAX_QTY_PER_LINE)
     sizes: GARLIC_SIZES,
   },
 ];
@@ -187,11 +197,13 @@ export const CONTACT_PHONE = "(734) 417-9715";
 export const ORDERS_COLLECTION = "Orders";
 
 // Firestore collection holding stock levels. One document per product, with the
-// document ID equal to the product `id` above and a number field `poundsAvailable`.
+// document ID equal to the product `id` above and a number field named for its unit:
+// `poundsAvailable` for lb products, `headsAvailable` for head products (see UNITS).
 // A product with no inventory document shows as sold out.
 export const INVENTORY_COLLECTION = "Inventory";
 
-// Show "Only X lb left" when a product's stock is at or below this many pounds.
+// Show "Only X lb left" when a product's stock is at or below this amount
+// (in the product's unit). A product can override it with `lowStockAt`.
 export const LOW_STOCK_POUNDS = 50;
 
 // How long stock is held for a customer while they're on the Stripe payment page.
@@ -232,6 +244,44 @@ export function formatPrice(dollars) {
   return Number.isInteger(dollars) ? `$${dollars}` : `$${dollars.toFixed(2)}`;
 }
 
-export function pricePerPound(size) {
-  return `$${(size.price / size.pounds).toFixed(2)}/lb`;
+// Dollars → whole cents, avoiding floating-point drift (e.g. 1.15 * 100).
+export function toCents(dollars) {
+  return Math.round(dollars * 100);
+}
+
+export function getUnit(product) {
+  return UNITS[product?.unit || "lb"];
+}
+
+// How many units of stock one of this size uses (pounds for lb products).
+export function sizeAmount(size) {
+  return size.amount ?? size.pounds ?? 1;
+}
+
+// "35 lb", "1 head", "6 heads"
+export function formatAmount(product, n) {
+  const unit = getUnit(product);
+  return `${n} ${n === 1 ? unit.singular : unit.plural}`;
+}
+
+// "$3.00/lb" or "$1.50/head"
+export function pricePerUnit(product, size) {
+  return `$${(size.price / sizeAmount(size)).toFixed(2)}/${getUnit(product).singular}`;
+}
+
+// Max quantity of one size of this product per order.
+export function maxQtyFor(product) {
+  return product?.maxPerOrder ?? MAX_QTY_PER_LINE;
+}
+
+// Describes a size + quantity: "10 lb × 2" or, for single-unit sizes, "6 heads".
+// Works with saved order items too (which store `unit` and `amount`).
+export function quantityLabel({ sizeLabel, quantity, amount, unit }) {
+  const u = Object.values(UNITS).find((x) => x.singular === unit);
+  if (amount === 1 && u && unit !== "lb") return `${quantity} ${quantity === 1 ? u.singular : u.plural}`;
+  return `${sizeLabel} × ${quantity}`;
+}
+
+export function lowStockThreshold(product) {
+  return product?.lowStockAt ?? LOW_STOCK_POUNDS;
 }

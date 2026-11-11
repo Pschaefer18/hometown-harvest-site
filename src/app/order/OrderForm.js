@@ -10,16 +10,21 @@ import {
   DELIVERY_AREA_NOTE,
   DELIVERY_ZIP_CODES,
   FULFILLMENT_OPTIONS,
-  LOW_STOCK_POUNDS,
   PICKUP_MAP_IMAGE,
-  MAX_QTY_PER_LINE,
   PRODUCTS,
   findProduct,
   findSize,
   formatPrice,
   getFulfillmentFee,
   isDeliveryZipAllowed,
-  pricePerPound,
+  formatAmount,
+  getUnit,
+  lowStockThreshold,
+  maxQtyFor,
+  pricePerUnit,
+  quantityLabel,
+  sizeAmount,
+  toCents,
 } from "@/lib/orderConfig";
 
 // e.g. "$5 · Free on orders $50+"
@@ -64,7 +69,7 @@ function ProductImage({ src, alt }) {
   return <img ref={imgRef} className={styles.productImage} src={src} alt={alt} onError={() => setFailed(true)} />;
 }
 
-function QuantityStepper({ value, onChange, label, disabled, canIncrease = true }) {
+function QuantityStepper({ value, onChange, label, disabled, max, canIncrease = true }) {
   return (
     <div className={styles.stepper} aria-label={label}>
       <button
@@ -78,8 +83,8 @@ function QuantityStepper({ value, onChange, label, disabled, canIncrease = true 
       <span aria-live="polite">{value}</span>
       <button
         type="button"
-        onClick={() => onChange(Math.min(MAX_QTY_PER_LINE, value + 1))}
-        disabled={disabled || !canIncrease || value >= MAX_QTY_PER_LINE}
+        onClick={() => onChange(Math.min(max, value + 1))}
+        disabled={disabled || !canIncrease || value >= max}
         aria-label={`Add one ${label}`}
       >
         +
@@ -88,7 +93,7 @@ function QuantityStepper({ value, onChange, label, disabled, canIncrease = true 
   );
 }
 
-// inventory: { [productId]: poundsAvailable } from Firestore, or null if it couldn't be loaded.
+// inventory: { [productId]: stock in the product's unit } from Firestore, or null if it couldn't be loaded.
 export default function OrderForm({ canceled, openOptionIds, inventory }) {
   const router = useRouter();
   const openOptions = FULFILLMENT_OPTIONS.filter((o) => openOptionIds.includes(o.id));
@@ -154,8 +159,8 @@ export default function OrderForm({ canceled, openOptionIds, inventory }) {
     const stock = inventory ? inventory[product.id] ?? 0 : Infinity;
     const inCart = lineItems
       .filter((l) => l.productId === product.id)
-      .reduce((s, l) => s + l.size.pounds * l.quantity, 0);
-    const smallestSize = Math.min(...product.sizes.map((s) => s.pounds));
+      .reduce((s, l) => s + sizeAmount(l.size) * l.quantity, 0);
+    const smallestSize = Math.min(...product.sizes.map(sizeAmount));
     return {
       stock,
       inCart,
@@ -168,21 +173,30 @@ export default function OrderForm({ canceled, openOptionIds, inventory }) {
 
   const selectedOption = openOptions.find((o) => o.id === fulfillmentId);
   const isDelivery = selectedOption?.method === "delivery";
-  const subtotal = lineItems.reduce((s, l) => s + l.total, 0);
+  const subtotal = lineItems.reduce((s, l) => s + toCents(l.total), 0) / 100;
   const fee = getFulfillmentFee(selectedOption, subtotal);
-  const total = subtotal + fee;
+  const total = (toCents(subtotal) + toCents(fee)) / 100;
   // How much more produce would make delivery free (0 if not applicable).
   const amountToFreeDelivery =
     selectedOption?.fee && selectedOption.freeOver && fee > 0 ? selectedOption.freeOver - subtotal : 0;
   const zipEntered = /^\d{5}$/.test(address.zipCode.trim());
   const zipOutOfArea = isDelivery && zipEntered && !isDeliveryZipAllowed(address.zipCode.trim());
-  const totalPounds = lineItems.reduce((s, l) => s + l.size.pounds * l.quantity, 0);
+  // e.g. "35 lb, 6 heads" for the summary
+  const amountTotals = {};
+  for (const l of lineItems) {
+    const unit = getUnit(l.product);
+    amountTotals[unit.singular] ??= { product: l.product, n: 0 };
+    amountTotals[unit.singular].n += sizeAmount(l.size) * l.quantity;
+  }
+  const amountSummary = Object.values(amountTotals)
+    .map(({ product, n }) => formatAmount(product, n))
+    .join(", ");
 
   const missing = [];
   if (!lineItems.length) missing.push("add at least one item");
   for (const p of overLimitProducts) {
     const { stock } = stockInfo(p);
-    missing.push(stock > 0 ? `reduce ${p.name} to ${stock} lb or less` : `remove ${p.name} (sold out)`);
+    missing.push(stock > 0 ? `reduce ${p.name} to ${formatAmount(p, stock)} or less` : `remove ${p.name} (sold out)`);
   }
   if (!selectedOption) missing.push("choose delivery or pickup");
   if (!customer.firstName.trim() || !customer.lastName.trim()) missing.push("enter your name");
@@ -281,15 +295,15 @@ export default function OrderForm({ canceled, openOptionIds, inventory }) {
                     <h3 className={styles.productName}>{product.name}</h3>
                     {product.tagline && <p className={styles.productTagline}>{product.tagline}</p>}
                     {!soldOut && Number.isFinite(stock) && (
-                      <p className={`${styles.stockLevel} ${stock <= LOW_STOCK_POUNDS ? styles.stockLow : ""}`}>
-                        {stock <= LOW_STOCK_POUNDS ? `Only ${stock} lb left` : "In stock"}
+                      <p className={`${styles.stockLevel} ${stock <= lowStockThreshold(product) ? styles.stockLow : ""}`}>
+                        {stock <= lowStockThreshold(product) ? `Only ${formatAmount(product, stock)} left` : "In stock"}
                       </p>
                     )}
                     <p className={styles.productDescription}>{product.description}</p>
                     {overLimit && (
                       <p className={styles.stockWarning} role="alert">
                         {stock > 0
-                          ? `Only ${stock} lb available. Please reduce your quantity.`
+                          ? `Only ${formatAmount(product, stock)} available. Please reduce your quantity.`
                           : "This just sold out. Please remove it from your order."}
                       </p>
                     )}
@@ -304,15 +318,23 @@ export default function OrderForm({ canceled, openOptionIds, inventory }) {
                                 {size.badge && <span className={styles.badge}>{size.badge}</span>}
                               </span>
                               <span className={styles.sizePrice}>
-                                {formatPrice(size.price)}
-                                <span className={styles.perPound}>{pricePerPound(size)}</span>
+                                {sizeAmount(size) === 1 ? (
+                                  // Single-unit sizes (e.g. garlic): show "$1.50/head"
+                                  pricePerUnit(product, size)
+                                ) : (
+                                  <>
+                                    {formatPrice(size.price)}
+                                    <span className={styles.perPound}>{pricePerUnit(product, size)}</span>
+                                  </>
+                                )}
                               </span>
                             </div>
                             <QuantityStepper
                               value={qty}
                               label={`${size.label} ${product.name}`}
                               disabled={!product.available}
-                              canIncrease={size.pounds <= remaining}
+                              max={maxQtyFor(product)}
+                              canIncrease={sizeAmount(size) <= remaining}
                               onChange={(v) => setQty(product.id, size.id, v)}
                             />
                           </li>
@@ -523,7 +545,12 @@ export default function OrderForm({ canceled, openOptionIds, inventory }) {
                     <div>
                       <span className={styles.summaryItemName}>{line.product.name}</span>
                       <span className={styles.summaryItemMeta}>
-                        {line.size.label} × {line.quantity}
+                        {quantityLabel({
+                          sizeLabel: line.size.label,
+                          quantity: line.quantity,
+                          amount: sizeAmount(line.size),
+                          unit: getUnit(line.product).singular,
+                        })}
                       </span>
                     </div>
                     <div className={styles.summaryItemRight}>
@@ -544,7 +571,7 @@ export default function OrderForm({ canceled, openOptionIds, inventory }) {
 
             <dl className={styles.totals}>
               <div>
-                <dt>Subtotal{totalPounds > 0 && <span className={styles.summaryItemMeta}> ({totalPounds} lb)</span>}</dt>
+                <dt>Subtotal{amountSummary && <span className={styles.summaryItemMeta}> ({amountSummary})</span>}</dt>
                 <dd>{formatPrice(subtotal)}</dd>
               </div>
               <div>

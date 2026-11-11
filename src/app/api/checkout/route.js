@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { getStripe } from "@/lib/server/stripe";
+import { toCents } from "@/lib/orderConfig";
 import {
   buildOrder,
   createPendingOrder,
@@ -49,8 +50,13 @@ export async function POST(request) {
       quantity: item.quantity,
       price_data: {
         currency: "usd",
-        unit_amount: item.unitPrice * 100,
-        product_data: { name: `${item.productName} (${item.sizeLabel})` },
+        unit_amount: toCents(item.unitPrice),
+        product_data: {
+          name:
+            item.amount === 1 && item.unit !== "lb"
+              ? `${item.productName} (per ${item.unit})`
+              : `${item.productName} (${item.sizeLabel})`,
+        },
       },
     }));
     if (order.fulfillmentFee > 0) {
@@ -58,7 +64,7 @@ export async function POST(request) {
         quantity: 1,
         price_data: {
           currency: "usd",
-          unit_amount: order.fulfillmentFee * 100,
+          unit_amount: toCents(order.fulfillmentFee),
           product_data: { name: order.fulfillment.method === "delivery" ? "Delivery fee" : "Pickup fee" },
         },
       });

@@ -7,13 +7,17 @@ import {
   CHECKOUT_HOLD_MINUTES,
   FULFILLMENT_OPTIONS,
   INVENTORY_COLLECTION,
-  MAX_QTY_PER_LINE,
   ORDERS_COLLECTION,
   PICKUP_ADDRESS,
   PRODUCTS,
   findProduct,
   findSize,
+  formatAmount,
   getFulfillmentFee,
+  getUnit,
+  maxQtyFor,
+  sizeAmount,
+  toCents,
   isDeliveryZipAllowed,
   isOptionOpen,
 } from "../orderConfig";
@@ -41,18 +45,20 @@ export function buildOrder(body) {
     const quantity = Number(line.quantity);
     if (!product || !size) fail("One of the items in your order is no longer available.");
     if (!product.available) fail(`${product.name} is sold out.`);
-    if (!Number.isInteger(quantity) || quantity < 1 || quantity > MAX_QTY_PER_LINE) {
-      fail(`Quantity for ${product.name} must be between 1 and ${MAX_QTY_PER_LINE}.`);
+    if (!Number.isInteger(quantity) || quantity < 1 || quantity > maxQtyFor(product)) {
+      fail(`Quantity for ${product.name} must be between 1 and ${maxQtyFor(product)}.`);
     }
     return {
       productId: product.id,
       productName: product.name,
       sizeId: size.id,
       sizeLabel: size.label,
-      pounds: size.pounds,
+      unit: getUnit(product).singular,
+      amount: sizeAmount(size), // stock units per item (pounds for lb products)
+      ...(getUnit(product).singular === "lb" ? { pounds: sizeAmount(size) } : {}),
       unitPrice: size.price,
       quantity,
-      lineTotal: size.price * quantity,
+      lineTotal: toCents(size.price * quantity) / 100,
     };
   });
 
@@ -88,15 +94,15 @@ export function buildOrder(body) {
     }
   }
 
-  const subtotal = items.reduce((sum, i) => sum + i.lineTotal, 0);
+  const subtotal = items.reduce((sum, i) => sum + toCents(i.lineTotal), 0) / 100;
   const fulfillmentFee = getFulfillmentFee(option, subtotal);
 
   return {
     items,
-    totalPounds: items.reduce((sum, i) => sum + i.pounds * i.quantity, 0),
+    totalPounds: items.reduce((sum, i) => sum + (i.pounds || 0) * i.quantity, 0),
     subtotal,
     fulfillmentFee,
-    total: subtotal + fulfillmentFee,
+    total: (toCents(subtotal) + toCents(fulfillmentFee)) / 100,
     fulfillment: {
       optionId: option.id,
       method: option.method,
@@ -110,22 +116,33 @@ export function buildOrder(body) {
   };
 }
 
-// { "onions": 35, "sweet-potatoes-orange": 10 }
-function poundsByProduct(items) {
-  const totals = {};
-  for (const item of items) totals[item.productId] = (totals[item.productId] || 0) + item.pounds * item.quantity;
-  return totals;
+// Stock each product needs, in its own unit and Inventory field:
+// { onions: { amount: 35, field: "poundsAvailable" }, garlic: { amount: 6, field: "headsAvailable" } }
+function stockNeededByProduct(items) {
+  const needs = {};
+  for (const item of items) {
+    const field = getUnit(findProduct(item.productId)).inventoryField;
+    needs[item.productId] ??= { amount: 0, field };
+    needs[item.productId].amount += item.amount * item.quantity;
+  }
+  return needs;
 }
+
+// Reservations saved before unit support were plain numbers of pounds.
+const normalizeReservation = (r) => (typeof r === "number" ? { amount: r, field: "poundsAvailable" } : r);
 
 const inventoryRef = (db, productId) => db.collection(INVENTORY_COLLECTION).doc(productId);
 const orderRef = (db, orderNumber) => db.collection(ORDERS_COLLECTION).doc(orderNumber);
 
-// Current pounds available for every product in orderConfig. Missing docs count as 0.
+// Current stock (in each product's unit) for every product in orderConfig. Missing docs count as 0.
 export async function getInventory() {
   const db = getAdminDb();
   const snaps = await db.getAll(...PRODUCTS.map((p) => inventoryRef(db, p.id)));
   return Object.fromEntries(
-    snaps.map((snap, i) => [PRODUCTS[i].id, snap.exists ? Math.max(0, Number(snap.get("poundsAvailable")) || 0) : 0])
+    snaps.map((snap, i) => {
+      const field = getUnit(PRODUCTS[i]).inventoryField;
+      return [PRODUCTS[i].id, snap.exists ? Math.max(0, Number(snap.get(field)) || 0) : 0];
+    })
   );
 }
 
@@ -137,12 +154,12 @@ function generateOrderNumber() {
   return `HH-${code}`;
 }
 
-// In one transaction: checks stock, subtracts the ordered pounds from Inventory,
+// In one transaction: checks stock, subtracts the ordered amounts from Inventory,
 // and saves the order as "pending_payment". Throws OrderValidationError if
 // there isn't enough stock.
 export async function createPendingOrder(order) {
   const db = getAdminDb();
-  const reservation = poundsByProduct(order.items);
+  const reservation = stockNeededByProduct(order.items);
   const productIds = Object.keys(reservation);
   const holdExpiresAt = Timestamp.fromMillis(Date.now() + CHECKOUT_HOLD_MINUTES * 60 * 1000);
 
@@ -156,13 +173,14 @@ export async function createPendingOrder(order) {
         if (orderSnap.exists) throw new OrderNumberTaken();
 
         invSnaps.forEach((snap, i) => {
-          const available = snap.exists ? Number(snap.get("poundsAvailable")) || 0 : 0;
-          const needed = reservation[productIds[i]];
+          const { amount: needed, field } = reservation[productIds[i]];
+          const available = snap.exists ? Number(snap.get(field)) || 0 : 0;
           if (needed > available) {
-            const name = findProduct(productIds[i]).name;
+            const product = findProduct(productIds[i]);
+            const name = product.name;
             throw new OrderValidationError(
               available > 0
-                ? `Sorry, only ${available} lb of ${name} left. Please adjust your order.`
+                ? `Sorry, only ${formatAmount(product, available)} of ${name} left. Please adjust your order.`
                 : `Sorry, ${name} just sold out. Please remove it from your order.`
             );
           }
@@ -170,7 +188,7 @@ export async function createPendingOrder(order) {
 
         invSnaps.forEach((snap, i) =>
           tx.update(snap.ref, {
-            poundsAvailable: FieldValue.increment(-reservation[productIds[i]]),
+            [reservation[productIds[i]].field]: FieldValue.increment(-reservation[productIds[i]].amount),
             updatedAt: FieldValue.serverTimestamp(),
           })
         );
@@ -193,7 +211,7 @@ export async function createPendingOrder(order) {
   throw new Error("Could not generate a unique order number.");
 }
 
-// Puts an unpaid order's pounds back into Inventory and sets its final status.
+// Puts an unpaid order's reserved stock back into Inventory and sets its final status.
 // Safe to call repeatedly: only orders still holding stock are released.
 export async function releaseOrderStock(orderNumber, newStatus) {
   if (!orderNumber) return false;
@@ -205,10 +223,11 @@ export async function releaseOrderStock(orderNumber, newStatus) {
 
     const reservation = snap.get("stockReservation") || {};
     if (!snap.get("stockReleased")) {
-      for (const [productId, pounds] of Object.entries(reservation)) {
+      for (const [productId, raw] of Object.entries(reservation)) {
+        const { amount, field } = normalizeReservation(raw);
         tx.set(
           inventoryRef(db, productId),
-          { poundsAvailable: FieldValue.increment(pounds), updatedAt: FieldValue.serverTimestamp() },
+          { [field]: FieldValue.increment(amount), updatedAt: FieldValue.serverTimestamp() },
           { merge: true }
         );
       }
@@ -241,7 +260,7 @@ export async function markOrderPaid(session) {
       status: "paid",
       paidAt: FieldValue.serverTimestamp(),
       amountPaid,
-      amountMismatch: amountPaid !== snap.get("total"),
+      amountMismatch: session.amount_total !== toCents(snap.get("total")),
       // Should never happen: payment arrived after the stock was put back.
       ...(snap.get("stockReleased") ? { needsReview: "Paid after stock was released. Check inventory." } : {}),
       stripeSessionId: session.id,

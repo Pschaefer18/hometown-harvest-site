@@ -13,6 +13,7 @@ import {
   PICKUP_MAP_IMAGE,
   SITE_URL,
   formatPrice,
+  quantityLabel,
 } from "../orderConfig";
 
 const esc = (value) =>
@@ -26,7 +27,7 @@ export function buildOrderEmailHtml(order) {
   const itemRows = order.items
     .map(
       (i) => `<tr>
-        <td style="padding:6px 0;${body}">${esc(i.productName)}, ${esc(i.sizeLabel)} &times; ${i.quantity}</td>
+        <td style="padding:6px 0;${body}">${esc(i.productName)}, ${esc(quantityLabel(i)).replace(" × ", " &times; ")}</td>
         <td style="padding:6px 0;${body}text-align:right;">${formatPrice(i.lineTotal)}</td>
       </tr>`
     )

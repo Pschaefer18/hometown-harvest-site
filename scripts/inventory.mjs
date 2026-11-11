@@ -1,9 +1,9 @@
 // Manage the Firestore Inventory collection from the command line.
 //
 //   npm run inventory                      Show stock for every product
-//   npm run inventory -- sync              Create missing Inventory docs (at 0 lb) for new products
-//   npm run inventory -- set onions 300    Set a product's stock to exactly 300 lb
-//   npm run inventory -- add onions 50     Add 50 lb (restock). Use a negative number to remove.
+//   npm run inventory -- sync              Create missing Inventory docs (at 0) for new products
+//   npm run inventory -- set onions 300    Set a product's stock to exactly 300 (in its unit: lb, heads, …)
+//   npm run inventory -- add onions 50     Add 50 (restock). Use a negative number to remove.
 //
 // Products come from src/lib/orderConfig.js. Credentials come from .env.local.
 
@@ -17,7 +17,10 @@ require("@next/env").loadEnvConfig(root, true, { info: () => {}, error: console.
 
 const { FieldValue } = await import("firebase-admin/firestore");
 const { getAdminDb } = await import("../src/lib/server/firebaseAdmin.js");
-const { PRODUCTS, INVENTORY_COLLECTION, LOW_STOCK_POUNDS } = await import("../src/lib/orderConfig.js");
+const { PRODUCTS, INVENTORY_COLLECTION, formatAmount, getUnit, lowStockThreshold, sizeAmount } = await import(
+  "../src/lib/orderConfig.js"
+);
+const fieldFor = (p) => getUnit(p).inventoryField;
 
 const db = getAdminDb();
 const col = db.collection(INVENTORY_COLLECTION);
@@ -35,7 +38,7 @@ function requireProduct(id) {
 function requireAmount(arg, { allowNegative }) {
   const n = Number(arg);
   if (arg === undefined || !Number.isFinite(n) || (!allowNegative && n < 0)) {
-    console.error(`Please give a ${allowNegative ? "" : "non-negative "}number of pounds, e.g. "npm run inventory -- ${command} ${productId ?? "onions"} 100"`);
+    console.error(`Please give a ${allowNegative ? "" : "non-negative "}number, e.g. "npm run inventory -- ${command} ${productId ?? "onions"} 100"`);
     process.exit(1);
   }
   return n;
@@ -43,18 +46,21 @@ function requireAmount(arg, { allowNegative }) {
 
 async function list() {
   const snaps = await db.getAll(...PRODUCTS.map((p) => col.doc(p.id)));
-  console.log(`\n${"Product".padEnd(26)}${"Stock".padStart(10)}   Status`);
+  console.log(`\n${"Product".padEnd(26)}${"Stock".padStart(12)}   Status`);
   console.log("─".repeat(60));
   snaps.forEach((snap, i) => {
     const p = PRODUCTS[i];
-    const lbs = snap.exists ? Number(snap.get("poundsAvailable")) || 0 : null;
+    const stock = snap.exists && snap.get(fieldFor(p)) !== undefined ? Number(snap.get(fieldFor(p))) || 0 : null;
     const status =
-      lbs === null ? "No Inventory doc (shows Sold out). Run: npm run inventory -- sync"
+      stock === null
+        ? snap.exists
+          ? `Missing field ${fieldFor(p)} (shows Sold out). Run: npm run inventory -- set ${p.id} <amount>`
+          : "No Inventory doc (shows Sold out). Run: npm run inventory -- sync"
       : !p.available ? "Hidden as sold out (available: false in orderConfig.js)"
-      : lbs < Math.min(...p.sizes.map((s) => s.pounds)) ? "Sold out"
-      : lbs <= LOW_STOCK_POUNDS ? "Low stock"
+      : stock < Math.min(...p.sizes.map(sizeAmount)) ? "Sold out"
+      : stock <= lowStockThreshold(p) ? "Low stock"
       : "In stock";
-    console.log(`${p.id.padEnd(26)}${(lbs === null ? "—" : `${lbs} lb`).padStart(10)}   ${status}`);
+    console.log(`${p.id.padEnd(26)}${(stock === null ? "—" : formatAmount(p, stock)).padStart(12)}   ${status}`);
   });
 
   const known = new Set(PRODUCTS.map((p) => p.id));
@@ -73,31 +79,31 @@ async function sync() {
   } else {
     const batch = db.batch();
     for (const p of missing) {
-      batch.create(col.doc(p.id), { name: p.name, poundsAvailable: 0, updatedAt: FieldValue.serverTimestamp() });
+      batch.create(col.doc(p.id), { name: p.name, [fieldFor(p)]: 0, updatedAt: FieldValue.serverTimestamp() });
     }
     await batch.commit();
-    console.log(`Created ${missing.map((p) => p.id).join(", ")} at 0 lb. Set stock with: npm run inventory -- set <product> <lb>`);
+    console.log(`Created ${missing.map((p) => p.id).join(", ")} at 0. Set stock with: npm run inventory -- set <product> <amount>`);
   }
   await list();
 }
 
 async function set() {
   const p = requireProduct(productId);
-  const lbs = requireAmount(amountArg, { allowNegative: false });
-  await col.doc(p.id).set({ name: p.name, poundsAvailable: lbs, updatedAt: FieldValue.serverTimestamp() }, { merge: true });
-  console.log(`${p.name}: set to ${lbs} lb.`);
+  const n = requireAmount(amountArg, { allowNegative: false });
+  await col.doc(p.id).set({ name: p.name, [fieldFor(p)]: n, updatedAt: FieldValue.serverTimestamp() }, { merge: true });
+  console.log(`${p.name}: set to ${formatAmount(p, n)}.`);
   await list();
 }
 
 async function add() {
   const p = requireProduct(productId);
-  const lbs = requireAmount(amountArg, { allowNegative: true });
+  const n = requireAmount(amountArg, { allowNegative: true });
   // increment() is safe even while customers are checking out.
   await col.doc(p.id).set(
-    { name: p.name, poundsAvailable: FieldValue.increment(lbs), updatedAt: FieldValue.serverTimestamp() },
+    { name: p.name, [fieldFor(p)]: FieldValue.increment(n), updatedAt: FieldValue.serverTimestamp() },
     { merge: true }
   );
-  console.log(`${p.name}: ${lbs >= 0 ? "added" : "removed"} ${Math.abs(lbs)} lb.`);
+  console.log(`${p.name}: ${n >= 0 ? "added" : "removed"} ${formatAmount(p, Math.abs(n))}.`);
   await list();
 }
 

@@ -182,6 +182,12 @@ never mean unlimited sales.
 - The order page shows "In stock", "Only X lb left" (at 50 lb or less; set by `LOW_STOCK_POUNDS`),
   or "Sold out", and won't let customers add more than what's left.
 
+**Products sold by the head (or another unit):** set `unit: "head"` on the product and give its sizes
+an `amount` (e.g. `{ id: "head", label: "Per head", amount: 1, price: 1.5 }`). Its stock is tracked in
+the Inventory field **`headsAvailable`** instead of `poundsAvailable`, and the page shows "$1.50/head"
+and "Only 12 heads left". `maxPerOrder` on a product overrides the per-order quantity limit. To add other
+units (like "bunch"), add them to `UNITS` in `orderConfig.js`.
+
 **Managing inventory from the terminal** (uses the credentials in `.env.local`):
 
 ```bash

@@ -15,6 +15,7 @@ import {
   PICKUP_MAPS_URL,
   PICKUP_MAP_IMAGE,
   formatPrice,
+  quantityLabel,
 } from "@/lib/orderConfig";
 
 export const metadata = { title: "Order Confirmed | Hometown Harvest" };
@@ -89,7 +90,7 @@ export default async function OrderSuccessPage({ searchParams }) {
                   {order.items.map((item) => (
                     <li key={`${item.productId}-${item.sizeId}`}>
                       <span>
-                        {item.productName}, {item.sizeLabel} × {item.quantity}
+                        {item.productName}, {quantityLabel(item)}
                       </span>
                       <span>{formatPrice(item.lineTotal)}</span>
                     </li>
