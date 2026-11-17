@@ -161,6 +161,19 @@ export const FULFILLMENT_OPTIONS = [
     icon: "/man-carrying-package.png",
     iconInactive: "/man-carrying-package-gray.png",
   },
+  {
+    id: "delivery-2026-12-01",
+    method: "delivery",
+    title: "Home Delivery",
+    dateLabel: "Tuesday, December 1",
+    timeLabel: "Afternoon delivery, approx. 2–6 PM",
+    orderCutoff: "2026-11-30T23:59:00-05:00",
+    cutoffLabel: "Order by Monday, Nov 30",
+    fee: 5,
+    freeOver: 50,
+    icon: "/express-delivery.png",
+    iconInactive: "/express-delivery-gray.png",
+  },
 ];
 
 // ZIP codes we deliver to. Orders for delivery to any other ZIP are refused
