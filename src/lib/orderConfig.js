@@ -174,6 +174,18 @@ export const FULFILLMENT_OPTIONS = [
     icon: "/express-delivery.png",
     iconInactive: "/express-delivery-gray.png",
   },
+  {
+    id: "pickup-2026-12-05",
+    method: "pickup",
+    title: "Garden Pickup",
+    dateLabel: "Saturday, December 5",
+    timeLabel: "12–6 PM at 5185 Zeeb Rd, Dexter",
+    orderCutoff: "2026-12-04T23:59:00-05:00",
+    cutoffLabel: "Order by Friday, Dec 4",
+    fee: 0,
+    icon: "/man-carrying-package.png",
+    iconInactive: "/man-carrying-package-gray.png",
+  },
 ];
 
 // ZIP codes we deliver to. Orders for delivery to any other ZIP are refused
